@@ -161,3 +161,5 @@ Alle sollten `LastTaskResult = 0` sein. Falls nicht → sofort Log-Datei prüfen
 - [ ] Erste Health Monitor Reports überprüfen
 - [ ] Job-Follow-up Alerts testen (gibt es 14+ Tage alte Bewerbungen?)
 - [ ] iCloud-Sync-Konflikt-Status prüfen (nach `*version*` Dateien suchen)
+
+<!-- Push-Test Sun Oct 11 01:08:53     2026 -->
