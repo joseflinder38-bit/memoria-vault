@@ -2,10 +2,36 @@
 type: guide
 tags: [domain/hobby, 3d-druck, kaufberatung]
 erstellt: 2026-10-06
-status: aktuell
+aktualisiert: 2026-10-10
+status: kaufentscheidung-getroffen
 ---
 
 # 🖨️ 3D-Drucker für Einsteiger — Vergleich & Kaufberatung (Stand Okt. 2026)
+
+## 🎯 KONKRETE ENTSCHEIDUNG (Update 2026-10-10)
+
+**Einsatzzweck:** Figuren/Miniaturen (Tabletop, Deko) → **Resin**, nicht FDM.
+**Kauf geplant:** November 2026
+
+### Kaufempfehlung
+
+| Modell | Preis (DE) | Auflösung | Einschätzung |
+|---|---|---|---|
+| **Elegoo Mars 5 Ultra** ⭐ TOP-PICK | ~270–340 € (eu.elegoo.com, Amazon.de) | 9K | Nachfolger des Mars 4 Ultra (inzwischen bei 3djake.de ausverkauft/eingestellt), WiFi, Kamera, aktuell lieferbar |
+| Anycubic Photon Mono M5s Pro | ~329 € | hoch | Gleichwertige Alternative |
+| Anycubic Photon Mono M7 Pro | ~480–580 € | 14K | Nur bei extremem Detailanspruch nötig — für normale Tabletop-Minis Overkill |
+
+**→ Empfehlung: Elegoo Mars 5 Ultra**
+
+### PC-Setup-Relevanz (RTX 5060 Ti)
+Resin-Slicer-Software (Lychee Slicer, Chitubox) profitiert bei hochauflösenden Druckern (9K/12K/14K) spürbar von GPU-Leistung — empfohlen wird mind. GTX 1070/8GB. Die vorhandene RTX 5060 Ti übertrifft das deutlich → **kein Flaschenhals, eher ein Vorteil** (kein Ruckeln beim Slicen vieler/großer Miniaturen-Dateien, wie es bei schwachen Laptops vorkommt).
+
+### Zusätzlich einplanen (~80–180 € extra)
+- Wash & Cure Station (manche Bundles enthalten sie bereits)
+- Nitril-Handschuhe, Isopropanol (>91%), Papiertücher
+- Gute Belüftung am Aufstellort (Harzgeruch, nicht im Schlafbereich)
+
+---
 
 ## TL;DR — Schnelle Empfehlung
 
