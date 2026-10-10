@@ -60,11 +60,13 @@ try {
     $UnstagedChanges = ($StatusOutput | Measure-Object).Count
     Write-Log "Unstaged-Änderungen: $UnstagedChanges" "INFO"
 
-    # Git Pull (um Konflikte zu vermeiden)
-    Write-Log "Git Pull durchgeführt" "INFO"
-    $PullOutput = git pull origin master 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        Write-Log "Git Pull-Warnung (Exit Code: $LASTEXITCODE)" "WARN"
+    # Git Pull (um Konflikte zu vermeiden) - ebenfalls mit Retry
+    Write-Log "Git Pull wird versucht..." "INFO"
+    for ($Attempt = 1; $Attempt -le 3; $Attempt++) {
+        git pull origin master 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) { break }
+        Write-Log "Git Pull fehlgeschlagen, Versuch $Attempt/3 (Exit Code: $LASTEXITCODE)" "WARN"
+        if ($Attempt -lt 3) { Start-Sleep -Seconds 5 }
     }
 
     # Git Add
@@ -89,11 +91,26 @@ try {
         Write-Log "Git Commit fehlgeschlagen (Exit Code: $LASTEXITCODE)" "WARN"
     }
 
-    # Git Push
-    Write-Log "Git Push durchgeführt" "INFO"
-    git push origin master 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        throw "Git Push fehlgeschlagen (Exit Code: $LASTEXITCODE)"
+    # Git Push mit Retry-Logik (Norton SSL-Inspektion verursacht gelegentliche
+    # "Connection reset" Fehler bei langlebigen HTTPS-Verbindungen - ein
+    # erneuter Versuch nach kurzer Pause behebt das meist, ohne dass Norton
+    # umkonfiguriert werden muss)
+    Write-Log "Git Push wird versucht..." "INFO"
+    $PushSuccess = $false
+    $MaxRetries = 5
+    for ($Attempt = 1; $Attempt -le $MaxRetries; $Attempt++) {
+        git push origin master 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) {
+            $PushSuccess = $true
+            Write-Log "Git Push erfolgreich (Versuch $Attempt/$MaxRetries)" "INFO"
+            break
+        } else {
+            Write-Log "Git Push fehlgeschlagen, Versuch $Attempt/$MaxRetries (Exit Code: $LASTEXITCODE)" "WARN"
+            if ($Attempt -lt $MaxRetries) { Start-Sleep -Seconds 8 }
+        }
+    }
+    if (-not $PushSuccess) {
+        throw "Git Push fehlgeschlagen nach $MaxRetries Versuchen"
     }
 
     Write-Log "Backup erfolgreich abgeschlossen" "SUCCESS"
