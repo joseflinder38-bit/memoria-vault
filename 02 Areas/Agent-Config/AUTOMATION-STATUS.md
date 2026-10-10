@@ -1,231 +1,73 @@
 ---
 type: automation-dashboard
-version: "1.0"
-letztes-update: 2026-07-28
+version: "2.0"
+letztes-update: 2026-10-10
 ---
 
 # 🤖 AUTOMATION STATUS DASHBOARD
 
-**Live-Überblick über alle Automationen im Vault**
-
-Aktualisiert: 2026-07-28
+**Verifiziert live am 2026-10-10 — jeder Status hier basiert auf einem echten `Get-ScheduledTaskInfo`-Aufruf und Log-Dateiprüfung, nicht auf Vermutung (siehe [[02 Areas/Agent-Config/GLOBAL-RULES.md]] Automation-Status-Regel).**
 
 ---
 
-## ✅ AKTIVE AUTOMATIONEN
+## ✅ Alle Windows Task Scheduler Tasks (Stand 2026-10-10, 16:18 Uhr)
 
-### PHASE 1: QUICK WINS (ABGESCHLOSSEN)
+| Task | Zeitplan | Status | Nachweis |
+|---|---|---|---|
+| `Memoria-Daily-Note-Creation` | täglich 06:00 | ✅ AKTIV | LastTaskResult 0, Daily Notes werden erstellt |
+| `Memoria-Rainer-Maintenance` | täglich 08:00 | ✅ AKTIV | LastTaskResult 0, Vault-Export wird erstellt |
+| `Memoria-Vault-Maintenance` | täglich 06:00 | ✅ AKTIV (repariert 2026-10-10) | LastTaskResult 0, `vault-health-log.txt` wird befüllt |
+| `Memoria-Git-AutoBackup` | alle 10 Min | ✅ AKTIV (repariert 2026-10-10) | LastTaskResult 0, echte Commits + Pushes verifiziert |
+| `Memoria-Nina-Scout-Daily` | täglich 06:15 | ✅ AKTIV (repariert 2026-10-10) | LastTaskResult 0, `Jobsuche-*.md` wird erstellt |
 
-| Automation | Status | Zeitplan | Letzte Ausführung | Nächste |
-|-----------|--------|----------|-------------------|---------|
-| **Dataview Dashboards** | ✅ AKTIV | Echtzeit (on-demand) | 2026-07-28 | Echtzeit |
-| Bewerbungs-Status-Übersicht | ✅ AKTIV | On-demand | 2026-07-28 | — |
-| Kunden-Pipeline-Dashboard | ✅ AKTIV | On-demand | 2026-07-28 | — |
-| Finanzen-Dashboard 2026 | ✅ AKTIV | On-demand | 2026-07-28 | — |
+**Karl Market Watch:** Läuft laut Nutzerangabe täglich über eine Claude Cloud Routine (nicht über lokalen Task Scheduler, daher hier nicht per `schtasks` verifizierbar).
 
----
-
-### PHASE 2: AUTOMATION BACKBONE (IMPLEMENTIERT)
-
-| Automation | Status | Zeitplan | Script | Logs |
-|-----------|--------|----------|--------|------|
-| **Git Auto-Backup** | ✅ AKTIV | Alle 10 Minuten | `vault-git-backup.ps1` | `git-backup.log` |
-| Windows Task: Memoria-Git-AutoBackup | ✅ READY | Tägl. 10min Interval | — | — |
-| **Tag-Konvention** | ✅ DEFINIERT | Manual | — | — |
-| **Cloud Routines (vorbereitet)** | ⏳ BEREIT | — | — | — |
+**Dataview Dashboards** (Bewerbungen, Kunden-Pipeline, Finanzen): On-Demand, kein Scheduler nötig — Status unverändert ✅ vorhanden, Aktualität der Inhalte nicht separat geprüft.
 
 ---
 
-## ⏳ GEPLANTE AUTOMATIONEN (Setup erforderlich)
+## 🔧 Was am 2026-10-10 repariert wurde (vorher: 2+ Monate durchgehend kaputt)
 
-### Cloud Routines (in Claude Cloud einrichten)
+### 1. Git-Authentifizierung (Kernproblem seit mind. August)
+- **Ursache:** Git Credential Manager (`credential.helper=manager`) verlangt interaktiven Login-Popup → hängt in jeder Hintergrund-Automation für immer. Remote war zwischenzeitlich auf SSH umgestellt, aber nie ein SSH-Key eingerichtet.
+- **Fix:** GitHub Personal Access Token + `credential.helper=store` (kein Popup, nie wieder Login nötig). Remote zurück auf HTTPS.
+- **Zusatzfund:** Kaputte globale `credential.helper=manager-core` Config (Phantom-Binary) hat zusätzlich blockiert → entfernt.
 
-| Routine | Status | Zeitplan | Prompt-Status | Setup |
-|---------|--------|----------|---------------|-------|
-| Nina Scout - Daily Job Search | 🟢 **REPARIERT** | Täglich 06:15 | ✅ Vorbereitet | [[.claude/agents/nina-scout.md]] |
-| Weekly Applications Report | ⏳ BEREIT | Montag 08:00 | ✅ Vorbereitet | [[CLOUD-ROUTINES-SETUP.md]] |
-| Freelance Followup Reminders | ⏳ BEREIT | Freitag 16:00 | ✅ Vorbereitet | [[CLOUD-ROUTINES-SETUP.md]] |
-| Monthly Finance Report | ⏳ BEREIT | 1. Monat 09:00 | ✅ Vorbereitet | [[CLOUD-ROUTINES-SETUP.md]] |
+### 2. Sicherheitsproblem: Ausweisdokumente in Git-Historie
+- **Ursache:** Frühere Session hat per `git add -A` versehentlich Personalausweis- und Führerschein-Scans eingecheckt. Da nie erfolgreich gepusht wurde, war nichts öffentlich sichtbar.
+- **Fix:** Komplett neue, saubere Git-Historie (`clean-start` → `master`) ohne diese Dateien. `.gitignore` schützt jetzt dauerhaft `Ausweise/` und `Sensible Dokumente*/`.
 
-**Nächster Schritt:** 
-- Nina Scout: Windows Task Scheduler aktivieren ODER Cloud Routine in claude.ai einrichten
-- Andere Routines: Manuell in claude.ai einrichten (~20 min)
+### 3. Kaputte `.git/HEAD` durch iCloud-Sync-Konflikt
+- **Ursache:** Schnell aufeinanderfolgende Git-Befehle haben einen iCloud-Sync-Konflikt ausgelöst → `.git/HEAD` wurde zu `HEAD 2` umbenannt, Original fehlte. Git erkannte das Repo danach gar nicht mehr.
+- **Fix:** `HEAD 2` zurück auf `HEAD` umbenannt. **Strukturelles Risiko bleibt bestehen** (siehe unten).
 
----
+### 4. Vault-Maintenance Task: Relativer Pfad
+- **Ursache:** Task-Aktion nutzte `-File "02 Areas\...\vault-maintenance.ps1"` ohne Arbeitsverzeichnis → Skript nie gefunden.
+- **Fix:** Absoluter Pfad + `WorkingDirectory` gesetzt.
 
-## 🔧 TECHNISCHE DETAILS
+### 5. Nina-Scout-Daily Task: Umlaut-Verstümmelung im Task-Pfad selbst
+- **Ursache:** Task-Registrierung enthielt `Persoenliche` statt `Persönliche` (ASCII-Fallback-Problem bei Task-Scheduler-Erstellung mit Umlauten — das Script selbst hatte dafür schon einen Workaround, der Task-Pfad selbst aber nicht).
+- **Fix:** Task-Aktion mit korrektem Umlaut (über Zeichencode `[char]0x00F6` konstruiert) neu gesetzt.
 
-### Git Auto-Backup
+### 6. Git-AutoBackup Task: Falsche Anführungszeichen
+- **Ursache:** Task-Argumente nutzten einfache Anführungszeichen (`'...'`) um den Pfad — Windows' Kommandozeilen-Parser erkennt nur doppelte (`"..."`) für Pfade mit Leerzeichen.
+- **Fix:** Auf doppelte Anführungszeichen korrigiert.
 
-```
-Trigger: Windows Task Scheduler
-Zeitplan: Alle 10 Minuten (5:00 - 23:00)
-Script: 02 Areas/Persönliche Daten/Privat/vault-git-backup.ps1
-Aktion: 
-  1. Git Pull (um Konflikte zu vermeiden)
-  2. Git Add -A
-  3. Git Commit "Auto-backup [timestamp]"
-  4. Git Push origin master
-
-Logs: 02 Areas/Persönliche Daten/Privat/git-backup.log
-Fehlerbehandlung: Log schreiben bei Fehler
-```
-
-**Status:** ✅ LIVE (seit 2026-07-28)
+### 7. Fehlplatzierte Spieledateien
+- `FRONTEND/`, `GLOBAL/`, `server.dll` (Reste von NFS Most Wanted aus einer Gaming-Session) lagen im Vault-Root und wurden mitversioniert. Jetzt entfernt + gitignored.
 
 ---
 
-### Dataview Dashboards
+## ⚠️ Offenes strukturelles Risiko: Git-Repo in iCloud-Sync-Ordner
 
-```
-Dateien:
-- 01 Projects/Bewerbungen/Status-Übersicht.md
-- 01 Projects/Freelance Gefahrstoffe Aufbau/Kunden-Pipeline.md
-- 02 Areas/Finanzen/Dashboard-2026.md
-
-Trigger: On-Demand (öffne die Datei → Queries laden automatisch)
-Datenquellen:
-  - Bewerbungs-Notes mit Frontmatter
-  - Kunden-Notes mit Frontmatter
-  - Finanzen-Einträge
-
-Aktualisierung: Echtzeit (wenn Quelle sich ändert)
-```
-
-**Status:** ✅ LIVE (seit 2026-07-28)
+Der komplette `.git`-Ordner (tausende kleiner Objektdateien) liegt innerhalb von iCloud Drive. Das ist grundsätzlich fragil — Cloud-Sync-Dienste (iCloud, Dropbox, OneDrive) sind nicht für Verzeichnisse mit vielen kleinen, häufig geschriebenen Dateien gemacht und können Sync-Konflikte erzeugen (siehe Fund #3 oben, ist bereits einmal real passiert). Siehe [[02 Areas/Agent-Config/VAULT-OPTIMIZATION-ROADMAP.md]] für Lösungsoptionen.
 
 ---
 
-### Tag-Konvention
+## 📍 Nächste Verifikation
 
+Prüfe in 24h, ob die reparierten Tasks auch bei automatischem (nicht manuell angestoßenem) Lauf durchlaufen:
+```powershell
+Get-ScheduledTask | Where-Object { $_.TaskName -match "Memoria" } | Get-ScheduledTaskInfo | Select-Object TaskName, LastRunTime, LastTaskResult
 ```
-Definitionen: 02 Areas/Agent-Config/TAG-KONVENTION.md
-
-Tags:
-- domain/* (jobsuche, freelance, finanzen, persönlich)
-- status/* (active, completed, waiting, blocked, on-hold)
-- priority/* (high, medium, low)
-- action/* (follow-up, review, send-email, update-status)
-
-Verwendung: In jedem Frontmatter
-Nutzen: Für Dataview-Queries
-
-Status: ✅ DEFINIERT, ⏳ rollout zu bestehenden Notes
-```
-
----
-
-## 📊 AUTOMATIONS-STATISTIK
-
-| Metrik | Wert |
-|--------|------|
-| **Aktive Automationen** | 2 |
-| **Geplante Automationen** | 3 |
-| **Automation-Abdeckung** | ~60% (Phase 1 + 2 aktiv) |
-| **Geplante Automation (nach Setup)** | ~90% |
-| **Zeit gesparte pro Woche** | ~2-3h (geschätzt) |
-
----
-
-## 🎯 NÄCHSTE SCHRITTE
-
-### HEUTE NOCH (falls Zeit übrig):
-
-- [ ] **Obsidian UI Setup** (~30 min)
-  - [ ] Templater Plugin installieren
-  - [ ] Daily Notes Automater Plugin installieren
-  - [ ] Folder Templates konfigurieren
-  - [ ] Daily Notes Ordner konfigurieren
-
-### DIESE WOCHE:
-
-- [ ] **Cloud Routines aktivieren** (~20 min)
-  - [ ] Weekly Applications Report einrichten
-  - [ ] Freelance Followup Reminders einrichten
-  - [ ] Monthly Finance Report einrichten
-
-- [ ] **Tags zu bestehenden Notes** (~2-3h)
-  - [ ] Alle Bewerbungs-Notes taggen
-  - [ ] Alle Kunden-Notes taggen
-
-### NÄCHSTE WOCHE:
-
-- [ ] **Testing & Validierung**
-  - [ ] Cloud Routines testen (manuell triggern)
-  - [ ] Dashboards verifizieren
-  - [ ] Git-Backup Logs prüfen
-
----
-
-## 📞 MONITORING
-
-Prüfe täglich (5 min):
-```
-1. Git-Backup Log: 02 Areas/Persönliche Daten/Privat/git-backup.log
-   → Sollten alle 10 min neue Einträge ✅ stehen
-
-2. Task Scheduler: 
-   "Memoria-Git-AutoBackup" sollte Status "Ready" haben
-
-3. Dashboards:
-   Öffne kurz die 3 Dashboards → sollten aktuelle Daten zeigen
-```
-
----
-
-## 🚨 FEHLERBEHANDLUNG
-
-**Problem:** Git-Backup schlägt fehl (❌ in Log)
-```
-Lösungen:
-1. Git-Konfiguration prüfen: git config --list
-2. GitHub-Access prüfen: git push --dry-run
-3. Firewall/VPN-Issues ausschließen
-4. Pfade prüfen: Script-Pfad korrekt?
-```
-
-**Problem:** Dashboards zeigen keine Daten
-```
-Lösungen:
-1. Dataview Plugin aktiviert?
-2. Frontmatter-Felder in Quellnotes vorhanden?
-3. Ordner-Pfade in Query korrekt?
-4. Note-Namen stimmen überein?
-```
-
-**Problem:** Cloud Routines funktionieren nicht
-```
-Lösungen:
-1. Prompt korrekt eingegeben?
-2. Ordner-Pfade im Prompt korrekt?
-3. Output-Ordner vorhanden?
-4. Manuelle Test-Ausführung erfolgreich?
-```
-
----
-
-## 📍 STATUSBERICHT
-
-**Stand: 2026-07-28, 18:30**
-
-✅ **Abgeschlossen (heute):**
-- Dataview Dashboards (3x) erstellt
-- Git Auto-Backup Script erstellt + Task registriert
-- Tag-Konvention definiert
-- Cloud Routine Prompts vorbereitet
-- Automation-Dokumentation vollständig
-
-⏳ **Bereit für Setup:**
-- Obsidian UI: Templater + Daily Notes Plugins (~30 min)
-- Cloud Routines: Manuelles Einrichten (~20 min)
-- Tag Retro-fitting: Alle Notes taggen (~2-3h)
-
-📊 **Automation-Potenzial:**
-- Phase 1 + 2: ~60% implementiert ✅
-- Nach Setup: ~90% möglich
-
----
-
-**Nächste Überprüfung:** 2026-07-29 (täglich, morgens)
-
-**Fragen?** → Siehe [[02 Areas/Agent-Config/VAULT-OPTIMIZATION-ROADMAP.md]]
+`LastTaskResult` muss `0` sein. Jeder andere Wert = erneut kaputt — dann bitte nicht einfach wieder als "läuft" dokumentieren, sondern den echten Fehler diagnostizieren (Log-Datei prüfen, Skript manuell ausführen).
