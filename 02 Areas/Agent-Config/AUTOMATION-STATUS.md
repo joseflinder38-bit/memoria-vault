@@ -58,9 +58,14 @@ letztes-update: 2026-10-10
 
 ---
 
-## ⚠️ Offenes strukturelles Risiko: Git-Repo in iCloud-Sync-Ordner
+## ✅ Behoben (2026-10-10, direkt im Anschluss): Git-Repo aus iCloud-Sync-Ordner verlegt
 
-Der komplette `.git`-Ordner (tausende kleiner Objektdateien) liegt innerhalb von iCloud Drive. Das ist grundsätzlich fragil — Cloud-Sync-Dienste (iCloud, Dropbox, OneDrive) sind nicht für Verzeichnisse mit vielen kleinen, häufig geschriebenen Dateien gemacht und können Sync-Konflikte erzeugen (siehe Fund #3 oben, ist bereits einmal real passiert). Siehe [[02 Areas/Agent-Config/VAULT-OPTIMIZATION-ROADMAP.md]] für Lösungsoptionen.
+Der `.git`-Ordner (1097 Dateien, 79 MB) lag innerhalb von iCloud Drive und hat genau deshalb den `HEAD`-Sync-Konflikt verursacht (Fund #3 oben). Fix:
+- Echte Git-Daten per robocopy nach `C:\Users\josef\.git-data\Memoria.git\` verschoben (außerhalb jeder Cloud-Sync)
+- Im Vault liegt jetzt nur noch eine winzige `.git`-Verweisdatei (60 Bytes: `gitdir: C:/Users/josef/.git-data/Memoria.git`) — die kann iCloud gefahrlos synchronisieren, da sie keine interne Struktur hat, die kollidieren könnte
+- Live getestet: `Memoria-Git-AutoBackup` lief danach automatisch durch und committete/pushte korrekt (`58b7cd2 Auto-backup 2026-10-10 16:22:13`)
+
+**Hinweis für die Zukunft:** Falls der Vault jemals auf einen anderen Rechner umzieht, muss `C:\Users\josef\.git-data\Memoria.git\` mit umgezogen werden (liegt bewusst außerhalb des iCloud-Vaults, wird also NICHT automatisch mitsynchronisiert). Bei Bedarf einfach erneut `git clone` vom GitHub-Remote statt manuellem Kopieren.
 
 ---
 
