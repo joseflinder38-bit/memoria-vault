@@ -26,10 +26,34 @@ status: kaufentscheidung-getroffen
 ### PC-Setup-Relevanz (RTX 5060 Ti)
 Resin-Slicer-Software (Lychee Slicer, Chitubox) profitiert bei hochauflösenden Druckern (9K/12K/14K) spürbar von GPU-Leistung — empfohlen wird mind. GTX 1070/8GB. Die vorhandene RTX 5060 Ti übertrifft das deutlich → **kein Flaschenhals, eher ein Vorteil** (kein Ruckeln beim Slicen vieler/großer Miniaturen-Dateien, wie es bei schwachen Laptops vorkommt).
 
-### Zusätzlich einplanen (~80–180 € extra)
-- Wash & Cure Station (manche Bundles enthalten sie bereits)
-- Nitril-Handschuhe, Isopropanol (>91%), Papiertücher
-- Gute Belüftung am Aufstellort (Harzgeruch, nicht im Schlafbereich)
+### 🛒 Einkaufsliste (Stand 2026-10-10)
+
+**Hauptgerät**
+- [ ] Elegoo Mars 5 Ultra — ~270–340 € ([eu.elegoo.com](https://eu.elegoo.com/products/mars-5-ultra-9k-7inch-monochrome-lcd-resin-3d-printer) oder Amazon.de)
+
+**Nachbearbeitung** (prüfen ob im Bundle enthalten)
+- [ ] Wash & Cure Station — ~80–180 €
+
+**Verbrauchsmaterial**
+- [ ] Resin/Harz — 1–2 Flaschen zum Start (Standard-Grau/-Grün für Miniaturen), ~25–40 €/Liter
+- [ ] Isopropylalkohol (IPA), >91% — mehrere Liter
+- [ ] Nitril-Handschuhe (Box)
+- [ ] Papiertücher
+
+**Arbeitsplatz-Zubehör**
+- [ ] Silikon-Arbeitsmatte
+- [ ] Trichter + Filter (Harz zurückgießen)
+- [ ] Spachtel/Schaber (Drucke von Bauplatte lösen)
+
+**Umgebung** (kein Kauf, nur klären)
+- [ ] Belüfteten Standort festlegen — nicht Schlafzimmer
+- [ ] Stellfläche für Wash & Cure Station neben Drucker einplanen
+
+**Optional**
+- [ ] UV-lichtdichter Aufbewahrungsbehälter für Restharz
+- [ ] Lychee Slicer (kostenlos) vorab installieren und mit PC testen
+
+**Geschätzte Gesamtkosten:** ~400–550 € für komplettes Starter-Set
 
 ---
 
