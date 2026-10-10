@@ -8,6 +8,9 @@ datenquelle: "Stammdaten-VERIFIZIERT.md"
 quelle-verifiziert: true
 ---
 
+<div style="font-family: Bahnschrift; font-size: 40px; font-weight: 700;">ZEUS</div>
+<div style="font-size: 48px;">🧠</div>
+
 # Henry's Knowledge Base – Josef Ferdinand Linder
 
 **⚠️ WICHTIG:** Alle **persönlichen Stammdaten** (Adresse, Ausweisdaten, Zertifikate, Ausbildung) befinden sich jetzt in [[02 Areas/Persönliche Daten/Stammdaten-VERIFIZIERT]] — der offiziellen, verifizierten Single Source of Truth.

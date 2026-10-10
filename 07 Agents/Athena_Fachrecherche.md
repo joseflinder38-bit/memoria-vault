@@ -6,6 +6,9 @@ status: MANUELL – kein automatischer Trigger
 letztes-update: 05.07.2026
 ---
 
+<div style="font-family: Bahnschrift; font-size: 40px; font-weight: 700;">ATHENA</div>
+<div style="font-size: 48px;">☣️</div>
+
 ⚠️ **STATUS-REGEL:** Dieser Agent läuft NICHT automatisch. Task-Scheduler-Prüfung (05.07.2026): Keine "lena"-Aufgaben registriert.
 
 ---

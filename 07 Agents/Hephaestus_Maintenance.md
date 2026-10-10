@@ -10,6 +10,10 @@ status: aktiv
 automatisierung-aktiv: false
 ---
 
+<div style="font-family: Bahnschrift; font-size: 40px; font-weight: 700;">HEPHAESTUS</div>
+<div style="font-size: 48px;">🔧</div>
+---
+
 # 🤖 RAINER – VAULT MAINTENANCE AGENT
 
 **Geplanter Wartungs-Agent – Konzept & Dokumentation**

@@ -6,6 +6,9 @@ letztes-update: 2026-07-16
 task-status: ⚠️ ERROR (Datei-Lock-Konflikt, Obsidian lädt)
 ---
 
+<div style="font-family: Bahnschrift; font-size: 40px; font-weight: 700;">KRATOS</div>
+<div style="font-size: 48px;">📈</div>
+
 ⚠️ **STATUS-UPDATE (16.07.2026):** Dieser Agent hat einen **Windows Task** (`Karl Market Watch - Daily Market Reports`), aber die letzte Ausführung ist mit Error-Code -2147020576 (ERROR_SHARING_VIOLATION) fehlgeschlagen. Grund: Obsidian gelockt Vault-Dateien beim Schreiben. **FIX angewendet:** Retry-Logic im PowerShell-Skript (`karl-daily-market.ps1`) eingebaut.
 
 # 📊 Kratos - Marktbeobachter

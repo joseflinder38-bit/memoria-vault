@@ -6,6 +6,9 @@ status: MANUELL – keine Automatisierung
 letztes-update: 04.07.2026
 ---
 
+<div style="font-family: Bahnschrift; font-size: 40px; font-weight: 700;">APOLLO</div>
+<div style="font-size: 48px;">📊</div>
+
 ⚠️ **STATUS-REGEL:** Dieser Agent läuft NICHT automatisch. Task-Scheduler-Prüfung (04.07.2026): Keine "otto"-Aufgaben registriert.
 
 **Rollen-Update (04.07.2026):**

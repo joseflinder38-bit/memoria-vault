@@ -6,6 +6,9 @@ status: MANUELL – kein automatischer Trigger
 letztes-update: 2026-07-05
 ---
 
+<div style="font-family: Bahnschrift; font-size: 40px; font-weight: 700;">HADES</div>
+<div style="font-size: 48px;">🏷️</div>
+
 # Max – Preisvergleich
 
 ## ⚠️ STATUS-REGEL

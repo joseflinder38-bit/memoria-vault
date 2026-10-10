@@ -5,6 +5,9 @@ rhythmus: bei Bedarf
 letztes-update: 
 ---
 
+<div style="font-family: Bahnschrift; font-size: 40px; font-weight: 700;">CALLIOPE</div>
+<div style="font-size: 48px;">🎥</div>
+
 # 🎥 Vera - Video- & Wissensrecherche
 
 ## 🎯 Aufgabe
