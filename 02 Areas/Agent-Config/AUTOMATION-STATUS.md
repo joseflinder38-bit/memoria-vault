@@ -163,3 +163,4 @@ Alle sollten `LastTaskResult = 0` sein. Falls nicht → sofort Log-Datei prüfen
 - [ ] iCloud-Sync-Konflikt-Status prüfen (nach `*version*` Dateien suchen)
 
 <!-- Push-Test Sun Oct 11 01:08:53     2026 -->
+
