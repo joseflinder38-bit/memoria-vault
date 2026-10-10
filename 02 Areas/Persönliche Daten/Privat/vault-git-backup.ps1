@@ -1,11 +1,15 @@
-# ============================================================================
+﻿# ============================================================================
 # MEMORIA GIT AUTO-BACKUP SCRIPT – Alle 10 Minuten
 # ============================================================================
 # Füehrt automatisch alle 10 Minuten aus via Windows Task Scheduler
 # Erweiterte Version mit vollständigem Error Handling & Monitoring
 # ============================================================================
 
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Continue'
+# Hinweis: NICHT 'Stop' verwenden - native Befehle wie git schreiben normale
+# Infomeldungen auf stderr, die PowerShell mit ErrorActionPreference='Stop'
+# faelschlich als fatalen Fehler behandelt. Fehlerpruefung erfolgt bewusst
+# ueber $LASTEXITCODE weiter unten.
 
 # Umlaut-Fix: $oe wird über Zeichencode statt wörtlich aufgebaut (BOM/Codepage-sicher)
 $oe = [char]0x00F6
