@@ -1,0 +1,221 @@
+// Prisma Schema for Marketplace MVP
+// Database: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============= USERS =============
+
+model User {
+  id                  String   @id @default(cuid())
+  email               String   @unique
+  passwordHash        String
+  displayName         String?
+  profilePictureUrl   String?
+  userType            UserType @default(BUYER) // BUYER, SELLER, ADMIN
+  kycVerified         Boolean  @default(false)
+  kycVerifiedAt       DateTime?
+  bio                 String?
+  phone               String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  sellerProfile       Seller?
+  products            Product[]
+  conversationsAsBuyer Conversation[] @relation("buyer")
+  conversationsAsSeller Conversation[] @relation("seller")
+  messagesSent        Message[] @relation("sender")
+  messagesReceived    Message[] @relation("receiver")
+  transactionsAsBuyer Transaction[] @relation("buyer")
+  transactionsAsSeller Transaction[] @relation("seller")
+  reviewsWritten      Review[] @relation("reviewer")
+  reviewsReceived     Review[] @relation("reviewed")
+
+  @@map("users")
+}
+
+enum UserType {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+// ============= SELLERS =============
+
+model Seller {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shopName            String   @unique
+  description         String?
+  rating              Decimal  @default(0) @db.Decimal(3, 2)
+  totalReviews        Int      @default(0)
+  responseTimeHours   Int?
+  verifiedBadge       Boolean  @default(false)
+  businessType        BusinessType @default(PRIVATE)
+  companyName         String?
+  taxId               String?
+  bankAccount         String?  // Should be encrypted in production
+  createdAt           DateTime @default(now())
+
+  // Relations
+  products            Product[]
+
+  @@map("sellers")
+}
+
+enum BusinessType {
+  PRIVATE
+  COMPANY
+}
+
+// ============= PRODUCTS =============
+
+model Product {
+  id                  String   @id @default(cuid())
+  sellerId            String
+  seller              Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  title               String
+  description         String?
+  category            String   // electronics, jewelry, furniture, etc.
+  subcategory         String?
+  condition           Condition @default(GOOD)
+  price               Decimal  @db.Decimal(10, 2)
+  currency            String   @default("EUR")
+  location            String?
+  latitude            Decimal? @db.Decimal(10, 8)
+  longitude           Decimal? @db.Decimal(11, 8)
+  views               Int      @default(0)
+  status              ProductStatus @default(ACTIVE)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  expiresAt           DateTime?
+
+  // Relations
+  images              ProductImage[]
+  messages            Message[]
+  transactions        Transaction[]
+
+  @@map("products")
+}
+
+enum Condition {
+  NEW
+  LIKE_NEW
+  GOOD
+  FAIR
+  POOR
+}
+
+enum ProductStatus {
+  ACTIVE
+  SOLD
+  HIDDEN
+  FLAGGED
+}
+
+model ProductImage {
+  id                  String   @id @default(cuid())
+  productId           String
+  product             Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  imageUrl            String
+  displayOrder        Int      @default(0)
+  uploadedAt          DateTime @default(now())
+
+  @@map("product_images")
+}
+
+// ============= MESSAGING =============
+
+model Conversation {
+  id                  String   @id @default(cuid())
+  buyerId             String
+  buyer               User     @relation("buyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  sellerId            String
+  seller              User     @relation("seller", fields: [sellerId], references: [id], onDelete: Cascade)
+  productId           String?
+  product             Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  lastMessageAt       DateTime?
+  createdAt           DateTime @default(now())
+
+  // Relations
+  messages            Message[]
+
+  @@unique([buyerId, sellerId, productId])
+  @@map("conversations")
+}
+
+model Message {
+  id                  String   @id @default(cuid())
+  conversationId      String
+  conversation        Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId            String
+  sender              User     @relation("sender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId          String
+  receiver            User     @relation("receiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  productId           String?
+  product             Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  content             String
+  isRead              Boolean  @default(false)
+  createdAt           DateTime @default(now())
+
+  @@map("messages")
+}
+
+// ============= TRANSACTIONS =============
+
+model Transaction {
+  id                  String   @id @default(cuid())
+  productId           String
+  product             Product  @relation(fields: [productId], references: [id])
+  buyerId             String
+  buyer               User     @relation("buyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  sellerId            String
+  seller              User     @relation("seller", fields: [sellerId], references: [id], onDelete: Cascade)
+  amount              Decimal  @db.Decimal(10, 2)
+  marketplaceFee      Decimal  @db.Decimal(10, 2) // 10% of amount
+  sellerPayout        Decimal  @db.Decimal(10, 2)
+  status              TransactionStatus @default(PENDING)
+  paymentMethod       String?  // "stripe", "paypal"
+  stripePaymentId     String?
+  createdAt           DateTime @default(now())
+  completedAt         DateTime?
+
+  // Relations
+  reviews             Review[]
+
+  @@map("transactions")
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  REFUNDED
+  DISPUTED
+}
+
+// ============= REVIEWS =============
+
+model Review {
+  id                  String   @id @default(cuid())
+  transactionId       String
+  transaction         Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  reviewerId          String
+  reviewer            User     @relation("reviewer", fields: [reviewerId], references: [id], onDelete: Cascade)
+  reviewedUserId      String
+  reviewedUser        User     @relation("reviewed", fields: [reviewedUserId], references: [id], onDelete: Cascade)
+  rating              Int      @db.SmallInt
+  comment             String?
+  response            String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("reviews")
+}

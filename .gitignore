@@ -1,0 +1,60 @@
+# OBSIDIAN & SESSION FILES
+.claudian/sessions/*.json
+.claudian/sessions/*.meta.json
+!.claudian/sessions/README.md
+
+# OBSIDIAN APP CONFIG & PLUGINS (lokal, nicht versionieren)
+.obsidian/
+.smart-env/
+
+# SYSTEM FILES
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.env
+.env.local
+
+# LARGE FILES & BINARIES
+*.iso
+*.exe
+*.dmg
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# BACKUPS
+*.bak
+*.backup
+*.tmp
+*.log
+
+# NODE/NPM
+node_modules/
+package-lock.json
+yarn.lock
+
+# IDE
+.vscode/settings.json
+.idea/
+*.sublime-workspace
+
+# BUILD ARTIFACTS
+dist/
+build/
+.next/
+
+# DATABASE
+*.sqlite
+*.db
+
+# TEMP
+.cache/
+temp/
+tmp/
+
+# AUSWEISDOKUMENTE - NIEMALS VERSIONIEREN (Repo ist öffentlich!)
+Ausweise/
+Sensible Dokumente*/

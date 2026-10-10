@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -NoProfile -Command \"$today = (Get-Date).ToString('yyyy-MM-dd'); $notePath = \\\"06 Daily Notes/$today.md\\\"; if (-not (Test-Path $notePath)) { $template = Get-Content '05 Templates/Daily-Note-Template.md' -Raw; $content = $template -replace '\\{\\{date\\}\\}', $today; Set-Content -Path $notePath -Value $content -Encoding UTF8; Write-Host \\\"Daily Note erstellt: $today\\\" }\"",
+            "statusMessage": "Daily Note wird überprüft/erstellt...",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVM Bewerbungsmappe - Josef Ferdinand Linder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #e8eaed;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            margin: 20px auto;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            page-break-after: always;
+            line-height: 1.7;
+            color: #2c3e50;
+        }
+
+        /* ANSCHREIBEN STYLES */
+        .anschreiben .header {
+            margin-bottom: 30px;
+        }
+
+        .anschreiben .name {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .anschreiben .date {
+            margin: 30px 0;
+            color: #666;
+        }
+
+        .anschreiben .recipient {
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+
+        .anschreiben .subject {
+            font-weight: bold;
+            margin: 20px 0;
+            color: #1e3a8a;
+        }
+
+        .anschreiben .greeting {
+            margin: 20px 0;
+        }
+
+        .anschreiben .content {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        .anschreiben .content p {
+            margin-bottom: 12px;
+        }
+
+        .anschreiben .content ul {
+            margin: 12px 0 12px 30px;
+        }
+
+        .anschreiben .content li {
+            margin-bottom: 8px;
+        }
+
+        .anschreiben .signature {
+            margin-top: 40px;
+        }
+
+        .anschreiben .footer {
+            margin-top: 40px;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+            font-size: 11px;
+            color: #999;
+        }
+
+        .highlight {
+            color: #1e3a8a;
+            font-weight: bold;
+        }
+
+        /* LEBENSLAUF STYLES */
+        .lebenslauf {
+            display: flex !important;
+            padding: 0 !important;
+            flex-wrap: nowrap;
+            height: auto !important;
+        }
+
+        .sidebar {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
+            color: white;
+            width: 35%;
+            padding: 40px 25px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .main {
+            width: 65%;
+            padding: 40px 35px;
+            box-sizing: border-box;
+            flex-grow: 1;
+        }
+
+        .sidebar .name {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .sidebar .title {
+            font-size: 14px;
+            color: #e0f2fe;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #60a5fa;
+            padding-bottom: 12px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            color: #e0f2fe;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 8px;
+        }
+
+        .sidebar-content {
+            font-size: 12px;
+            line-height: 1.8;
+            color: #f0f9ff;
+        }
+
+        .sidebar-content p {
+            margin-bottom: 8px;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 5px 10px;
+            border-radius: 14px;
+            font-size: 11px;
+            margin: 4px 4px 4px 0;
+            border: 1px solid rgba(255,255,255,0.4);
+            line-height: 1.4;
+        }
+
+        .main-section {
+            margin-bottom: 22px;
+        }
+
+        .main-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #1e3a8a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 6px;
+            display: flex;
+            align-items: center;
+        }
+
+        .main-title:before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #3b82f6;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .entry {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px dotted #d0d5e0;
+        }
+
+        .entry:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .entry-title {
+            font-weight: bold;
+            color: #1e3a8a;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .entry-subtitle {
+            font-size: 11px;
+            color: #3b82f6;
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+
+        .entry-description {
+            font-size: 11px;
+            color: #4b5563;
+            line-height: 1.6;
+            margin-top: 3px;
+        }
+
+        .bullet-list {
+            font-size: 11px;
+            color: #4b5563;
+            margin-top: 4px;
+            padding-left: 18px;
+            line-height: 1.6;
+        }
+
+        .bullet-list li {
+            margin-bottom: 4px;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        /* PRINT OPTIMIZED */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .page {
+                margin: 0;
+                box-shadow: none;
+                page-break-after: always;
+            }
+            .page-number {
+                display: none;
+            }
+        }
+
+        /* BROWSER VIEWING */
+        .toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #1e3a8a;
+            color: white;
+            padding: 12px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toolbar h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .toolbar-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .toolbar-buttons button {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .toolbar-buttons button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .document-container {
+            margin-top: 70px;
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <h1>📄 EVM Bewerbungsmappe – Josef Ferdinand Linder</h1>
+        <div class="toolbar-buttons">
+            <button onclick="window.print()">🖨️ PDF drucken</button>
+        </div>
+    </div>
+
+    <div class="document-container">
+        <!-- PAGE 1: ANSCHREIBEN -->
+        <div class="page anschreiben">
+            <div class="header">
+                <div class="name">Josef Ferdinand Linder</div>
+                <div>Unterdorfstraße 12a</div>
+                <div>65558 Heistenbach</div>
+                <div>📧 joseflinder38@gmail.com</div>
+            </div>
+
+            <div class="date">11. September 2026</div>
+
+            <div class="recipient">
+                <strong>Energieversorgung Mittelrhein AG (EVM)</strong><br>
+                Personalbereich<br>
+                Koblenz
+            </div>
+
+            <div class="subject">Bewerbung: Sachbearbeiter Netz- und Messstellenbetriebsabrechnung (m/w/d)</div>
+
+            <div class="greeting">Sehr geehrte Damen und Herren,</div>
+
+            <div class="content">
+                <p><strong>ich bewerbe mich mit großem Interesse auf Ihre ausgeschriebene Position als Sachbearbeiter Netz- und Messstellenbetriebsabrechnung (m/w/d) im Fachbereich Abrechnungsmanagement der Energieversorgung Mittelrhein AG.</strong> Mit meiner abgeschlossenen kaufmännischen Ausbildung (IHK Kaufmann für Büromanagement 2024) sowie meiner 5+ jährigen praktischen Erfahrung im Projektmanagement und Compliance-Bereich verfüge ich über die ideale Qualifikation für diese Position — und die Nähe zu Koblenz (nur ca. 30km von meinem Wohnort Heistenbach) ermöglicht mir maximale Verfügbarkeit und langfristiges Verankersein.</p>
+
+                <p><strong>Warum ich der ideale Kandidat für diese Rolle bin:</strong></p>
+                <ul>
+                    <li><strong>✅ Kaufmann für Büromanagement (IHK 2024):</strong> Fundierte kaufmännische Qualifikation mit fokus auf Büroorganisation, Verwaltung und kaufmännisches Denken — genau die Basis, die Sie für Abrechnungstätigkeiten brauchen</li>
+                    <li><strong>✅ Bewährte Zuverlässigkeit & Genauigkeit:</strong> 5+ Jahre durchgehende Betätigung bei AsEG-ALLDEMONT GmbH zeigt nicht nur Loyalität, sondern auch Gewissenhaftigkeit — essentiell für präzise Abrechnungsarbeit</li>
+                    <li><strong>✅ Dokumentation & Compliance-Expertise:</strong> Mit 8 aktiven Zertifikaten im Gefahrstoffbereich (TRGS 519/521, Betriebsanweisungen, Gefahrstoffkataster) beweise ich tiefes Verständnis für Dokumentation, Regelkonformität und sorgfältige Nachverfolgung</li>
+                    <li><strong>✅ Projektleiter-Erfahrung:</strong> Seit 2024 führe ich komplexe Gefahrstoffsanierungsprojekte — das beinhaltet Kommunikation mit Kunden, Behörden, Vertragspartnern und Datenmanagement</li>
+                    <li><strong>✅ Kaufmännische MS Office-Kompetenz:</strong> Professionelle Nutzung von Excel, Word, PowerPoint für Berichte, Datenanalyse und Dokumentation</li>
+                </ul>
+
+                <p><strong>Mein Verständnis der Abrechnungsrolle:</strong></p>
+                <p>Die Position erfordert nicht nur kaufmännische Grundkompetenz, sondern auch analytisches Denken, Sorgfalt und Kundenorientierung. Aus meiner Erfahrung weiß ich, dass <span class="highlight">Präzision bei Dokumentation und Reklamationsprüfung entscheidend</span> sind. Mein Gefahrstoffhintergrund zeigt, dass ich <span class="highlight">regulatorische Anforderungen ernst nehme</span> und <span class="highlight">mit Fehleranalyse und -behebung vertraut</span> bin.</p>
+
+                <p><strong>Die Nähe ist ein großes Plus:</strong> Mit nur 30km von Diez zu Koblenz habe ich nicht nur kurze Anfahrtszeiten, sondern auch lokale Verankerung. Das bedeutet für Sie: zuverlässige Verfügbarkeit, minimale Ausfallquoten und echtes Interesse an langfristiger Zusammenarbeit mit einem starken Arbeitgeber wie der EVM.</p>
+
+                <p>Besonders motiviert mich die Aussicht, in einem zukunftsweisenden Energieunternehmen der Region tätig zu sein. EVM ist im Westerwald bekannt und respektiert — und ich sehe darin eine großartige Chance, meine kaufmännischen Kompetenzen in einem stabilen, tariflich gesicherten Umfeld einzubringen.</p>
+
+                <p>Gerne stelle ich Ihnen in einem persönlichen Gespräch dar, wie ich mit meiner Kombination aus kaufmännischer Ausbildung, Gewissenhaftigkeit und praktischer Erfahrung sofort einen wertvollen Beitrag für Ihr Abrechnungsteam leisten kann. <span class="highlight">Ich freue mich auf Ihr Feedback und einen möglichen Gesprächstermin.</span></p>
+            </div>
+
+            <div class="signature">
+                <p>Mit freundlichen Grüßen,</p>
+                <p style="margin-top: 40px;"><strong>Josef Ferdinand Linder</strong></p>
+                <p style="margin-top: 15px; font-size: 12px;">
+                    Unterdorfstraße 12a | 65558 Heistenbach<br>
+                    📧 joseflinder38@gmail.com
+                </p>
+            </div>
+
+            <div class="footer">
+                <p><strong>Match-Score:</strong> 75% | <strong>Entfernung:</strong> 30km | <strong>Befristung:</strong> 2 Jahre + Übernahmeoption</p>
+            </div>
+        </div>
+
+        <!-- PAGE 2-3: LEBENSLAUF -->
+        <div class="page lebenslauf">
+            <!-- SIDEBAR -->
+            <div class="sidebar">
+                <div class="name">Josef Ferdinand Linder</div>
+                <div class="title">Projektleiter Gefahrstoffsanierung</div>
+
+                <!-- Kontakt -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">📞 Kontakt</div>
+                    <div class="sidebar-content">
+                        <p><strong>E-Mail:</strong><br>joseflinder38@gmail.com</p>
+                        <p><strong>Adresse:</strong><br>Unterdorfstraße 12a<br>65558 Heistenbach<br>Deutschland</p>
+                    </div>
+                </div>
+
+                <!-- Persönlich -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">👤 Persönlich</div>
+                    <div class="sidebar-content">
+                        <p><strong>Geburtsdatum:</strong><br>15.12.1999</p>
+                        <p><strong>Alter:</strong> 26 Jahre<br><strong>Führerschein:</strong> Klasse B</p>
+                    </div>
+                </div>
+
+                <!-- Kompetenzen -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">⚙️ Kernkompetenzen</div>
+                    <div class="sidebar-content">
+                        <div class="skill-tag">Gefahrstoffmanagement</div>
+                        <div class="skill-tag">TRGS 519 / 521</div>
+                        <div class="skill-tag">Asbest-Fachkunde</div>
+                        <div class="skill-tag">Abfallwirtschaft</div>
+                        <div class="skill-tag">Schimmelpilzsanierung</div>
+                        <div class="skill-tag">Brandschutz</div>
+                        <div class="skill-tag">MS Office</div>
+                        <div class="skill-tag">Projektmanagement</div>
+                    </div>
+                </div>
+
+                <!-- Sprachen -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">🌐 Sprachen</div>
+                    <div class="sidebar-content">
+                        <p>Deutsch: Muttersprache<br>Englisch: Grundkenntnisse</p>
+                    </div>
+                </div>
+
+                <!-- Zertifikate -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">✅ Zertifikate</div>
+                    <div class="sidebar-content">
+                        <p style="font-size: 9px;">• IHK Kaufmann (2024)<br>• Brandschutz Hilti (2024)<br>• Abfallwirtschaft (bis 2027)<br>• Schimmelpilz-Fachkunde<br>• TRGS 519 / 521<br>• Erste Hilfe (2023)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN CONTENT -->
+            <div class="main">
+                <!-- ZUSAMMENFASSUNG -->
+                <div class="main-section">
+                    <div class="main-title">Zusammenfassung</div>
+                    <div class="entry-description">
+                        Erfahrener Projektleiter mit spezialisiertem Fokus auf Gefahrstoffsanierung, Asbestmanagement und Betriebssicherheit. Kombiniere kaufmännische Kompetenzen mit umfangreicher Fachkunde. Kontinuierlich tätig bei AsEG-ALLDEMONT GmbH seit 2021.
+                    </div>
+                </div>
+
+                <!-- BERUFSERFAHRUNG -->
+                <div class="main-section">
+                    <div class="main-title">Berufliche Erfahrung</div>
+
+                    <div class="entry">
+                        <div class="entry-title">Projektleiter Gefahrstoffsanierung</div>
+                        <div class="entry-subtitle">AsEG-ALLDEMONT GmbH | Juni 2024 – Gegenwart</div>
+                        <ul class="bullet-list">
+                            <li>Projektleitung komplexer Gefahrstoffsanierungen</li>
+                            <li>Gefahrstoffkataster-Erstellung und -Management</li>
+                            <li>Betriebsanweisungen gemäß BetrSichV</li>
+                            <li>Unterweisungen und Schulungen für Mitarbeiter</li>
+                        </ul>
+                    </div>
+
+                    <div class="entry">
+                        <div class="entry-title">Kaufmann für Büromanagement + Sanierungsfacharbeiter</div>
+                        <div class="entry-subtitle">AsEG-ALLDEMONT GmbH | Dezember 2021 – Juni 2024</div>
+                        <ul class="bullet-list">
+                            <li>Verkürzte Berufsausbildung parallel zur Betätigung</li>
+                            <li>Duale Qualifizierung: Office + Sanierungspraxis</li>
+                            <li>IHK-Prüfung: Note 3 – <span class="highlight">BESTANDEN</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="entry">
+                        <div class="entry-title">Sanierungsfacharbeiter</div>
+                        <div class="entry-subtitle">AsEG-ALLDEMONT GmbH | Januar 2021 – Dezember 2021</div>
+                        <ul class="bullet-list">
+                            <li>Praktische Tätigkeit in Gefahrstoffsanierung</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SCHULBILDUNG -->
+                <div class="main-section">
+                    <div class="main-title">Schulbildung & Ausbildung</div>
+
+                    <div class="entry">
+                        <div class="entry-title">Kaufmann für Büromanagement (IHK)</div>
+                        <div class="entry-subtitle">BBS Montabaur | Dezember 2021 – Juni 2024</div>
+                        <div class="entry-description">Berufsabschluss mit IHK-Prüfung bestanden. Verkürzter Ausbildungsweg.</div>
+                    </div>
+
+                    <div class="entry">
+                        <div class="entry-title">Konstruktionsmechaniker (Feinblechbau)</div>
+                        <div class="entry-subtitle">Wilhelm-Knapp-Schule, Weilburg | 2016 – 2020</div>
+                        <div class="entry-description">Ausbildung abgeschlossen; Neuorientierung zur Gefahrstoffsanierung.</div>
+                    </div>
+
+                    <div class="entry">
+                        <div class="entry-title">Mittlere Reife</div>
+                        <div class="entry-subtitle">Theodissa Realschule plus Diez | 2010 – 2016</div>
+                    </div>
+                </div>
+
+                <!-- ZERTIFIKATE -->
+                <div class="main-section">
+                    <div class="main-title">Zertifikate & Fachkunde</div>
+
+                    <div class="entry">
+                        <div class="entry-title">Entsorgungsfachbetriebeverordnung (EfbV) & AbfAEV</div>
+                        <div class="entry-subtitle">kenic GmbH, Berlin | Juni 2024 | <span class="highlight">Gültig bis 2027</span></div>
+                    </div>
+
+                    <div class="entry">
+                        <div class="entry-title">Brandschutz Anwender Professional</div>
+                        <div class="entry-subtitle">Hilti Deutschland AG | November 2024 | <span class="highlight">Aktuell</span></div>
+                    </div>
+
+                    <div class="entry">
+                        <div class="entry-title">Schimmelpilzsanierung – Fachkunde mit Prüfung</div>
+                        <div class="entry-subtitle">Umweltinstitut Offenbach | Juli 2023</div>
+                    </div>
+
+                    <div class="entry">
+                        <div class="entry-title">Erste-Hilfe-Ausbildung (Betrieblich)</div>
+                        <div class="entry-subtitle">miniHelp, Worms | August 2023</div>
+                    </div>
+
+                    <div class="entry">
+                        <div class="entry-title">TRGS 519, 521 & 2.7 (Asbest & Sanierung)</div>
+                        <div class="entry-subtitle">Verschiedene Kurse | 2022</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Optional: keyboard shortcut for print
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>

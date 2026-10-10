@@ -1,0 +1,46 @@
+---
+date: {{date}}
+tags: [daily]
+woche: {{date:W}}
+letztes-update: 2026-07-10
+---
+
+# {{date}} – Tagesnotiz
+
+## Morgen (5 Min)
+
+**Heute fokussiere ich auf:**
+1. 
+2. 
+3. 
+
+**Offene Punkte von gestern:**
+- [ ] 
+
+**Jobsuche heute:**
+- [ ] (Bewerbung / Recherche / Nachfassen)
+
+**Freelance heute:**
+- [ ] (Kundenakquise / Angebot / Recherche)
+
+---
+
+## Abend (5 Min)
+
+**Erledigt:**
+- [x] 
+
+**Verschoben auf morgen:**
+- [ ] 
+
+**Heute gelernt:**
+
+
+**Energie heute (1-5):** 
+
+---
+
+## Verknüpfungen
+→ [[Home]]
+→ [[02 Areas/Jobsuche/Jobsuche]]
+→ [[02 Areas/Freelance Gefahrstoffe/Fristenkalender]]

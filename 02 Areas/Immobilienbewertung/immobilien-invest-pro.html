@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immobilien-Investment Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2pdf@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --success: #28a745;
+            --danger: #ff6b6b;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 5px;
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 2px solid #e0e0e0;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .nav-tab:hover {
+            background: #fff;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        input, select, textarea {
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .form-hint {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 3px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.9em;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff5252;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card.secondary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-card.danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #ff5252 100%);
+        }
+
+        .stat-card.success {
+            background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .stat-subtitle {
+            font-size: 0.8em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: var(--light);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 30px;
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f0f0f0;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            display: none;
+            border-left: 4px solid;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: var(--success);
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: var(--danger);
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left-color: var(--info);
+        }
+
+        .currency {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .percent {
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .percent.negative {
+            color: var(--danger);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background: #e7f3ff;
+            color: var(--primary);
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: var(--success);
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: var(--danger);
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .scenarios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .scenario-card {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .scenario-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .scenario-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid var(--info);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #1565c0;
+            font-size: 0.95em;
+        }
+
+        .ranking-table td {
+            padding: 10px;
+        }
+
+        .ranking-rank {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--primary);
+            width: 40px;
+            text-align: center;
+        }
+
+        .ranking-name {
+            font-weight: 600;
+        }
+
+        .ranking-score {
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .nav-tabs, button {
+                display: none;
+            }
+        }
+
+        .accordion {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: var(--light);
+            padding: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .accordion-header:hover {
+            background: #f0f0f0;
+        }
+
+        .accordion-header.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 20px;
+            background: white;
+        }
+
+        .accordion-content.active {
+            display: block;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .accordion-header.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Immobilien-Investment PRO</h1>
+            <p>Professionelle Investitionsanalyse mit Steuerberechnung, Szenarios & Advanced Metrics</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('tab-input')">📝 Eingabe</button>
+            <button class="nav-tab" onclick="switchTab('tab-analysis')">📊 Analyse</button>
+            <button class="nav-tab" onclick="switchTab('tab-scenarios')">🎯 Szenarien</button>
+            <button class="nav-tab" onclick="switchTab('tab-comparison')">⚖️ Vergleich</button>
+            <button class="nav-tab" onclick="switchTab('tab-reports')">📄 Reports</button>
+            <button class="nav-tab" onclick="switchTab('tab-amortization')">📈 Amortisation</button>
+        </div>
+
+        <div class="content">
+            <div id="alert" class="alert"></div>
+
+            <!-- TAB 1: EINGABE -->
+            <div id="tab-input" class="tab-pane active">
+                <div class="grid-2">
+                    <!-- LINKE SEITE: Basis-Daten -->
+                    <div class="section">
+                        <h3 class="section-title">🏠 Immobilie & Lage</h3>
+
+                        <div class="form-group">
+                            <label for="objectName">Objektname / Adresse *</label>
+                            <input type="text" id="objectName" placeholder="z.B. Berlin Mitte - 3-Zimmer Wohnung">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="location">Bundesland *</label>
+                                <select id="location">
+                                    <option>Baden-Württemberg</option>
+                                    <option>Bayern</option>
+                                    <option>Berlin</option>
+                                    <option selected>Brandenburg</option>
+                                    <option>Bremen</option>
+                                    <option>Hamburg</option>
+                                    <option>Hessen</option>
+                                    <option>Mecklenburg-Vorpommern</option>
+                                    <option>Niedersachsen</option>
+                                    <option>Nordrhein-Westfalen</option>
+                                    <option>Rheinland-Pfalz</option>
+                                    <option>Saarland</option>
+                                    <option>Sachsen</option>
+                                    <option>Sachsen-Anhalt</option>
+                                    <option>Schleswig-Holstein</option>
+                                    <option>Thüringen</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">Stadt/Gemeinde</label>
+                                <input type="text" id="city" placeholder="z.B. Berlin">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="propertyType">Immobilientyp *</label>
+                                <select id="propertyType">
+                                    <option>Einfamilienhaus</option>
+                                    <option selected>Mehrfamilienhaus</option>
+                                    <option>Eigentumswohnung</option>
+                                    <option>Büro/Gewerblich</option>
+                                    <option>Mischnutzung</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="unitCount">Anzahl Wohneinheiten</label>
+                                <input type="number" id="unitCount" placeholder="1" min="1" value="1">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sizeQm">Größe (qm)</label>
+                                <input type="number" id="sizeQm" placeholder="80" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="buildYear">Baujahr</label>
+                                <input type="number" id="buildYear" placeholder="2000" min="1800" max="2050">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="renovationStatus">Sanierungszustand</label>
+                                <select id="renovationStatus">
+                                    <option>Sehr gut</option>
+                                    <option selected>Gut</option>
+                                    <option>Befriedigend</option>
+                                    <option>Renovierungsbedürftig</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="denkmalschutz">Denkmalschutz</label>
+                                <select id="denkmalschutz">
+                                    <option selected>Nein</option>
+                                    <option>Ja - AfA 8%/Jahr</option>
+                                    <option>Ja - AfA 12%/Jahr</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h3 class="section-title" style="margin-top: 30px;">💰 Kaufpreis & Nebenkosten</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="purchasePrice">Kaufpreis (€) *</label>
+                                <input type="number" id="purchasePrice" placeholder="500000" step="10000">
+                            </div>
+                            <div class="form-group">
+                                <label for="pricePerQm">€/qm</label>
+                                <input type="number" id="pricePerQm" placeholder="0" readonly style="background: #f5f5f5;">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="brokerFee">Maklerprovision (€) oder (%)</label>
+                                <input type="text" id="brokerFee" placeholder="20000 oder 5%">
+                            </div>
+                            <div class="form-group">
+                                <label for="notaryFee">Notargebühren (€)</label>
+                                <input type="number" id="notaryFee" placeholder="8000" step="100">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="propertyTransferTax">Grunderwerbsteuer (€)</label>
+                                <input type="number" id="propertyTransferTax" placeholder="Automatisch berechnet" readonly style="background: #f5f5f5;">
+                            </div>
+                            <div class="form-group">
+                                <label for="landRegistryFee">Grundbuch-Eintrag (€)</label>
+                                <input type="number" id="landRegistryFee" placeholder="500" step="100" value="500">
+                            </div>
+                        </div>
+
+                        <h3 class="section-title" style="margin-top: 30px;">🏦 Finanzierung</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="equity">Eigenkapital (€) *</label>
+                                <input type="number" id="equity" placeholder="100000" step="10000">
+                            </div>
+                            <div class="form-group">
+                                <label for="equityPercent">% des Kaufpreises</label>
+                                <input type="number" id="equityPercent" placeholder="0" readonly style="background: #f5f5f5;">
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            ℹ️ <strong>Mehrere Darlehen unterstützt:</strong> Tragen Sie mehrere Kreditlinien mit unterschiedlichen Zinssätzen ein.
+                        </div>
+
+                        <div id="loansContainer">
+                            <div class="accordion">
+                                <div class="accordion-header active" onclick="toggleAccordion(this)">
+                                    <span>📌 Darlehen 1</span>
+                                    <span class="toggle-icon">▼</span>
+                                </div>
+                                <div class="accordion-content active">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Darlehensbetrag (€)</label>
+                                            <input type="number" class="loan-amount" placeholder="400000" step="10000">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Zinssatz (%)</label>
+                                            <input type="number" class="loan-rate" placeholder="3.5" step="0.1" min="0" max="20">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Laufzeit (Jahre)</label>
+                                            <input type="number" class="loan-years" placeholder="25" step="1" min="1" max="50" value="25">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Sondertilgung p.a. (%)</label>
+                                            <input type="number" class="loan-extra-payment" placeholder="0" step="0.5" min="0" max="50" value="0">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>KfW-Förderung (z.B. KfW40)</label>
+                                            <select class="loan-kfw">
+                                                <option>Keine</option>
+                                                <option>KfW-40 Effizienzhaus</option>
+                                                <option>KfW-55 Effizienzhaus</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn-secondary btn-small" onclick="addLoan()" style="margin-top: 10px;">+ Weiteres Darlehen</button>
+                    </div>
+
+                    <!-- RECHTE SEITE: Miete & Betriebskosten -->
+                    <div class="section">
+                        <h3 class="section-title">🏠 Mieteinnahmen</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="monthlyRent">Monatliche Miete (€) *</label>
+                                <input type="number" id="monthlyRent" placeholder="2000" step="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="rentPerQm">€/qm/Monat</label>
+                                <input type="number" id="rentPerQm" placeholder="0" readonly style="background: #f5f5f5;">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vacancy">Leerstandsquote (%)</label>
+                                <input type="number" id="vacancy" placeholder="5" step="1" min="0" max="100" value="5">
+                            </div>
+                            <div class="form-group">
+                                <label for="rentGrowth">Jährliche Mietsteigerung (%)</label>
+                                <input type="number" id="rentGrowth" placeholder="2.5" step="0.5" min="0" max="10" value="2.5">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="otherIncome">Nebeneinkünfte (z.B. Garage, Keller) - monatlich (€)</label>
+                            <input type="number" id="otherIncome" placeholder="0" step="50" value="0">
+                        </div>
+
+                        <h3 class="section-title" style="margin-top: 30px;">🔧 Betriebskosten (monatlich)</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="propertyTax">Grundsteuer (€)</label>
+                                <input type="number" id="propertyTax" placeholder="100" step="10" value="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="insurance">Versicherung (€)</label>
+                                <input type="number" id="insurance" placeholder="50" step="10" value="50">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="utilities">Nebenkosten/Bewirtschaftung (€)</label>
+                                <input type="number" id="utilities" placeholder="0" step="10" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="management">Verwaltung/Hausmeister (€)</label>
+                                <input type="number" id="management" placeholder="0" step="10" value="0">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="maintenance">Instandhaltung (€)</label>
+                                <input type="number" id="maintenance" placeholder="150" step="10" value="150">
+                            </div>
+                            <div class="form-group">
+                                <label for="maintenancePercent">% der Miete</label>
+                                <input type="number" id="maintenancePercent" placeholder="7.5" step="0.1" value="7.5">
+                                <div class="form-hint">Zur automatischen Berechnung</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cleaningCommunal">Reinigung Gemeinschaftsflächen (€)</label>
+                                <input type="number" id="cleaningCommunal" placeholder="0" step="10" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="streetCleaning">Straßenreinigung (€)</label>
+                                <input type="number" id="streetCleaning" placeholder="0" step="10" value="0">
+                            </div>
+                        </div>
+
+                        <h3 class="section-title" style="margin-top: 30px;">📋 Steuern & AfA</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="personalTaxRate">Persönlicher Steuersatz (%)</label>
+                                <input type="number" id="personalTaxRate" placeholder="42" step="1" min="0" max="100" value="42">
+                                <div class="form-hint">Für Gewinne/Verluste</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="tradeGrossIncome">Gewerbliche Einkünfte?</label>
+                                <select id="tradeGrossIncome">
+                                    <option selected>Keine</option>
+                                    <option>Ja - Gewerbesteuerpflichtig</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="buildingAfaPercent">Gebäude-AfA (%) p.a.</label>
+                                <input type="number" id="buildingAfaPercent" placeholder="2" step="0.1" min="0" max="10" value="2">
+                                <div class="form-hint">Üblicherweise 2% oder 2,5%</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="movableAfaPercent">Einrichtung-AfA (%) p.a.</label>
+                                <input type="number" id="movableAfaPercent" placeholder="0" step="0.5" min="0" max="20" value="0">
+                                <div class="form-hint">Falls vorhanden</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="other_costs">Sonstige Jahreskosten (€/Jahr)</label>
+                            <input type="number" id="other_costs" placeholder="0" step="100" value="0">
+                            <div class="form-hint">z.B. Abrechnungsarbeiten, Rechtsberatung</div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn-primary" onclick="addProperty()">✅ Immobilie hinzufügen</button>
+                            <button class="btn-secondary" onclick="clearForm()">🔄 Zurücksetzen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: ANALYSE -->
+            <div id="tab-analysis" class="tab-pane">
+                <div class="stat-grid" id="statsContainer"></div>
+
+                <div class="grid-2">
+                    <div>
+                        <h3 class="section-title">📊 Rendite-Analyse</h3>
+                        <div class="chart-container">
+                            <canvas id="chartRendite"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="section-title">💵 Cashflow-Analyse</h3>
+                        <div class="chart-container">
+                            <canvas id="chartCashflow"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div>
+                        <h3 class="section-title">🎯 KPI Comparison</h3>
+                        <div class="chart-container">
+                            <canvas id="chartKPI"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="section-title">📈 Schuldenabbau</h3>
+                        <div class="chart-container">
+                            <canvas id="chartDebtReduction"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="section-title">📋 Detaillierte Übersicht</h3>
+                <div class="table-container" id="tableContainer"></div>
+            </div>
+
+            <!-- TAB 3: SZENARIEN -->
+            <div id="tab-scenarios" class="tab-pane">
+                <h3 class="section-title">🎯 Szenario-Einstellungen</h3>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">Best Case</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Mietsteigerung/Jahr (%)</label>
+                                <input type="number" class="scenario-rent-best" placeholder="5" step="0.5" value="5">
+                            </div>
+                            <div class="form-group">
+                                <label>Inflationsrate (%)</label>
+                                <input type="number" class="scenario-inflation-best" placeholder="3" step="0.5" value="3">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Kostendeflation (%)</label>
+                            <input type="number" class="scenario-cost-best" placeholder="-1" step="0.5" value="-1">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">Base Case (realistisch)</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Mietsteigerung/Jahr (%)</label>
+                                <input type="number" class="scenario-rent-base" placeholder="2.5" step="0.5" value="2.5">
+                            </div>
+                            <div class="form-group">
+                                <label>Inflationsrate (%)</label>
+                                <input type="number" class="scenario-inflation-base" placeholder="2" step="0.5" value="2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Kostendeflation (%)</label>
+                            <input type="number" class="scenario-cost-base" placeholder="0" step="0.5" value="0">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">Worst Case</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Mietsteigerung/Jahr (%)</label>
+                                <input type="number" class="scenario-rent-worst" placeholder="0" step="0.5" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Inflationsrate (%)</label>
+                                <input type="number" class="scenario-inflation-worst" placeholder="4" step="0.5" value="4">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Kostendeflation (%)</label>
+                            <input type="number" class="scenario-cost-worst" placeholder="2" step="0.5" value="2">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">Krisen-Szenario</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Mietsteigerung/Jahr (%)</label>
+                                <input type="number" class="scenario-rent-crisis" placeholder="-2" step="0.5" value="-2">
+                            </div>
+                            <div class="form-group">
+                                <label>Inflationsrate (%)</label>
+                                <input type="number" class="scenario-inflation-crisis" placeholder="5" step="0.5" value="5">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Kostendeflation (%)</label>
+                            <input type="number" class="scenario-cost-crisis" placeholder="3" step="0.5" value="3">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-primary" onclick="calculateScenarios()" style="width: 100%; margin: 20px 0;">🎯 Szenarien berechnen</button>
+
+                <div id="scenariosResultContainer"></div>
+            </div>
+
+            <!-- TAB 4: VERGLEICH -->
+            <div id="tab-comparison" class="tab-pane">
+                <h3 class="section-title">📊 Objekt-Rankings</h3>
+
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-header">🏆 Best Cashflow</div>
+                        <div id="rankingCashflow" style="font-size: 0.95em;"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">💹 Best Netto-Rendite</div>
+                        <div id="rankingNetReturn" style="font-size: 0.95em;"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">⚡ Best Cap Rate</div>
+                        <div id="rankingCapRate" style="font-size: 0.95em;"></div>
+                    </div>
+                </div>
+
+                <h3 class="section-title" style="margin-top: 30px;">📋 Detaillierter Vergleich</h3>
+                <div class="table-container" id="comparisonTableContainer"></div>
+
+                <div class="grid-2" style="margin-top: 30px;">
+                    <div>
+                        <h3 class="section-title">💼 Portfolio-Statistiken</h3>
+                        <div class="stat-grid">
+                            <div class="stat-card">
+                                <div class="stat-label">Gesamt Eigenkapital</div>
+                                <div class="stat-value currency" id="portEqualityTotal">0€</div>
+                            </div>
+                            <div class="stat-card success">
+                                <div class="stat-label">Ø Netto-Rendite</div>
+                                <div class="stat-value" id="portAvgNetReturn">0%</div>
+                            </div>
+                            <div class="stat-card success">
+                                <div class="stat-label">Gesamt Cashflow/Monat</div>
+                                <div class="stat-value currency" id="portTotalCashflow">0€</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Ø Verschuldungsgrad</div>
+                                <div class="stat-value percent" id="portAvgLTV">0%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="section-title">⚠️ Risiko-Analyse</h3>
+                        <div class="stat-grid">
+                            <div class="stat-card danger">
+                                <div class="stat-label">Höchstes Risiko</div>
+                                <div class="stat-value percent" id="portMaxRisk">-</div>
+                            </div>
+                            <div class="stat-card success">
+                                <div class="stat-label">Geringste Schulden/Eigenkapital</div>
+                                <div class="stat-value percent" id="portMinLTV">-</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Anzahl Objekte</div>
+                                <div class="stat-value" id="portCount">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: REPORTS -->
+            <div id="tab-reports" class="tab-pane">
+                <h3 class="section-title">📄 Export & Reports</h3>
+
+                <div class="grid-3">
+                    <button class="btn-primary" onclick="generatePDFReport()" style="padding: 20px; height: 100px;">📋 PDF-Report</button>
+                    <button class="btn-primary" onclick="exportToExcel()" style="padding: 20px; height: 100px;">📊 Excel-Export</button>
+                    <button class="btn-secondary" onclick="exportJSON()" style="padding: 20px; height: 100px;">💾 JSON-Backup</button>
+                </div>
+
+                <div id="reportsContainer" style="margin-top: 30px;"></div>
+
+                <h3 class="section-title" style="margin-top: 30px;">🔧 Datenverwaltung</h3>
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="document.getElementById('importFile').click()">📂 Importieren</button>
+                    <button class="btn-danger" onclick="deleteAllData()">🗑️ Alle Daten löschen</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importJSON(event)">
+                </div>
+            </div>
+
+            <!-- TAB 6: AMORTISATION -->
+            <div id="tab-amortization" class="tab-pane">
+                <h3 class="section-title">📈 Amortisationsplan</h3>
+
+                <div class="grid-2">
+                    <div>
+                        <label for="amortYears">Zeitraum anzeigen (Jahre)</label>
+                        <input type="number" id="amortYears" placeholder="30" step="1" min="1" max="50" value="30">
+                        <button class="btn-primary" onclick="generateAmortization()" style="margin-top: 10px; width: 100%;">📊 Amortisationsplan generieren</button>
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            📌 Der Amortisationsplan zeigt Jahr für Jahr:<br>
+                            • Verbleibende Darlehensschuld<br>
+                            • Gezahlte Zinsen & Tilgung<br>
+                            • Eigenkapitalentwicklung
+                        </div>
+                    </div>
+                </div>
+
+                <div id="amortizationTableContainer" style="margin-top: 30px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let properties = [];
+        let chartInstances = {};
+
+        window.addEventListener('load', () => {
+            loadFromLocalStorage();
+            updateUI();
+        });
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function toggleAccordion(header) {
+            header.classList.toggle('active');
+            header.nextElementSibling.classList.toggle('active');
+        }
+
+        function addLoan() {
+            const container = document.getElementById('loansContainer');
+            const count = container.querySelectorAll('.accordion').length + 1;
+            const loanHTML = `
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>📌 Darlehen ${count}</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Darlehensbetrag (€)</label>
+                                <input type="number" class="loan-amount" placeholder="0" step="10000">
+                            </div>
+                            <div class="form-group">
+                                <label>Zinssatz (%)</label>
+                                <input type="number" class="loan-rate" placeholder="3.5" step="0.1" min="0" max="20">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Laufzeit (Jahre)</label>
+                                <input type="number" class="loan-years" placeholder="25" step="1" min="1" max="50" value="25">
+                            </div>
+                            <div class="form-group">
+                                <label>Sondertilgung p.a. (%)</label>
+                                <input type="number" class="loan-extra-payment" placeholder="0" step="0.5" min="0" max="50" value="0">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>KfW-Förderung</label>
+                                <select class="loan-kfw">
+                                    <option>Keine</option>
+                                    <option>KfW-40 Effizienzhaus</option>
+                                    <option>KfW-55 Effizienzhaus</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; align-items: flex-end;">
+                                <button class="btn-danger btn-small" onclick="this.parentElement.parentElement.parentElement.parentElement.remove()">Entfernen</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', loanHTML);
+        }
+
+        function calculateMonthlyPayment(principal, rate, years, extraPaymentPercent = 0) {
+            const monthlyRate = rate / 100 / 12;
+            const numPayments = years * 12;
+            if (monthlyRate === 0) return principal / numPayments;
+
+            let payment = (principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments))) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+            payment += (principal * (extraPaymentPercent / 100 / 12));
+            return payment;
+        }
+
+        function calculateTaxes(breedState) {
+            const transferTaxRates = {
+                'Baden-Württemberg': 0.055,
+                'Bayern': 0.03,
+                'Berlin': 0.055,
+                'Brandenburg': 0.05,
+                'Bremen': 0.04,
+                'Hamburg': 0.045,
+                'Hessen': 0.06,
+                'Mecklenburg-Vorpommern': 0.05,
+                'Niedersachsen': 0.03,
+                'Nordrhein-Westfalen': 0.065,
+                'Rheinland-Pfalz': 0.03,
+                'Saarland': 0.04,
+                'Sachsen': 0.03,
+                'Sachsen-Anhalt': 0.05,
+                'Schleswig-Holstein': 0.065,
+                'Thüringen': 0.045
+            };
+            return transferTaxRates[breedState] || 0.05;
+        }
+
+        function calculateProperty(prop, yearOffset = 0) {
+            const purchasePrice = prop.purchasePrice;
+
+            // Basis-Größen
+            const sizeQm = prop.sizeQm || 1;
+            const pricePerQm = purchasePrice / sizeQm;
+
+            // Finanzierung - alle Darlehen sammeln
+            const loanAmounts = document.querySelectorAll('.loan-amount');
+            const loanRates = document.querySelectorAll('.loan-rate');
+            const loanYears = document.querySelectorAll('.loan-years');
+            const loanExtraPayments = document.querySelectorAll('.loan-extra-payment');
+
+            let totalMonthlyPayment = 0;
+            let totalLoanAmount = 0;
+
+            loanAmounts.forEach((elem, idx) => {
+                const amount = parseFloat(elem.value) || 0;
+                const rate = parseFloat(loanRates[idx].value) || 0;
+                const years = parseFloat(loanYears[idx].value) || 25;
+                const extraPayment = parseFloat(loanExtraPayments[idx].value) || 0;
+
+                totalLoanAmount += amount;
+                totalMonthlyPayment += calculateMonthlyPayment(amount, rate, years, extraPayment);
+            });
+
+            // Falls keine Darlehen: berechne aus Equity
+            if (totalLoanAmount === 0) {
+                const equity = prop.equity || 0;
+                const loanAmount = purchasePrice - equity;
+                totalLoanAmount = loanAmount;
+                totalMonthlyPayment = calculateMonthlyPayment(loanAmount, 3.5, 25, 0);
+            }
+
+            const equity = prop.equity || 0;
+
+            // Mietentwicklung mit Inflation
+            const rentGrowth = (prop.rentGrowth || 2.5) / 100;
+            const monthlyRent = (prop.monthlyRent || 0) * Math.pow(1 + rentGrowth, yearOffset);
+            const effectiveRent = monthlyRent * (1 - (prop.vacancy || 5) / 100);
+            const otherIncome = prop.otherIncome || 0;
+            const totalRent = effectiveRent + otherIncome;
+
+            // Kostensteigerung
+            const inflation = (prop.inflation || 2) / 100;
+            const basePropertyTax = prop.propertyTax || 0;
+            const baseInsurance = prop.insurance || 0;
+            const baseMaintenance = Math.max(prop.maintenance || 150, (prop.monthlyRent * (prop.maintenancePercent || 7.5) / 100) || 150);
+            const baseUtilities = prop.utilities || 0;
+            const baseManagement = prop.management || 0;
+            const baseCleaning = prop.cleaningCommunal || 0;
+            const baseStreetCleaning = prop.streetCleaning || 0;
+
+            const propertyTax = basePropertyTax * Math.pow(1 + inflation, yearOffset);
+            const insurance = baseInsurance * Math.pow(1 + inflation, yearOffset);
+            const maintenance = baseMaintenance * Math.pow(1 + inflation, yearOffset);
+            const utilities = baseUtilities * Math.pow(1 + inflation, yearOffset);
+            const management = baseManagement * Math.pow(1 + inflation, yearOffset);
+            const cleaning = baseCleaning * Math.pow(1 + inflation, yearOffset);
+            const streetCleaning = baseStreetCleaning * Math.pow(1 + inflation, yearOffset);
+
+            const totalCosts = propertyTax + insurance + utilities + management + totalMonthlyPayment + maintenance + cleaning + streetCleaning;
+            const monthlyProfit = totalRent - totalCosts;
+            const annualProfit = monthlyProfit * 12;
+
+            // Rendite
+            const annualRent = totalRent * 12;
+            const grossReturn = (annualRent / purchasePrice) * 100;
+
+            // AfA (Abschreibung)
+            const buildingValue = purchasePrice * 0.8; // Normalerweise 80% für Gebäude
+            const buildingAfaPercent = (prop.buildingAfaPercent || 2) / 100;
+            const annualAfa = buildingValue * buildingAfaPercent;
+
+            // Steuerberechnung
+            const taxableIncome = annualProfit - annualAfa;
+            const personalTaxRate = (prop.personalTaxRate || 42) / 100;
+            const taxOnIncome = Math.max(0, taxableIncome) * personalTaxRate;
+            const taxSavings = Math.min(0, taxableIncome) * personalTaxRate; // Verlustabzug
+
+            const annualCosts = (totalCosts * 12) + (prop.other_costs || 0);
+            const netReturn = ((annualRent - annualCosts - taxOnIncome) / purchasePrice) * 100;
+
+            // Cash-on-Cash Return (Cashflow / Eigenkapital)
+            const cashOnCash = equity > 0 ? (monthlyProfit * 12 / equity) * 100 : 0;
+
+            // Cap Rate (NOI / Kaufpreis)
+            const noi = annualRent - annualCosts;
+            const capRate = (noi / purchasePrice) * 100;
+
+            // DSCR (Debt Service Coverage Ratio)
+            const annualDebtService = totalMonthlyPayment * 12;
+            const dscr = annualDebtService > 0 ? noi / annualDebtService : 0;
+
+            // LTV (Loan-to-Value)
+            const ltv = (totalLoanAmount / purchasePrice) * 100;
+
+            // Mietmultiplikator
+            const rentMultiplier = annualRent > 0 ? purchasePrice / annualRent : 0;
+
+            return {
+                pricePerQm,
+                rentPerQm: (totalRent / sizeQm),
+                monthlyRent: totalRent,
+                monthlyPayment: totalMonthlyPayment,
+                monthlyCosts: propertyTax + insurance + maintenance + utilities + management + cleaning + streetCleaning,
+                monthlyProfit: monthlyProfit,
+                annualRent: annualRent,
+                annualCosts: annualCosts,
+                grossReturn: grossReturn,
+                netReturn: netReturn,
+                loanAmount: totalLoanAmount,
+                equity: equity,
+                cashOnCash: cashOnCash,
+                capRate: capRate,
+                dscr: dscr,
+                ltv: ltv,
+                rentMultiplier: rentMultiplier,
+                annualAfa: annualAfa,
+                taxableIncome: taxableIncome,
+                taxOnIncome: taxOnIncome,
+                taxSavings: taxSavings,
+                noi: noi
+            };
+        }
+
+        function addProperty() {
+            // Sammle Darlehensdaten
+            const loans = [];
+            document.querySelectorAll('.accordion-content').forEach((content, idx) => {
+                const amount = parseFloat(content.querySelector('.loan-amount').value) || 0;
+                const rate = parseFloat(content.querySelector('.loan-rate').value) || 3.5;
+                const years = parseFloat(content.querySelector('.loan-years').value) || 25;
+                const extraPayment = parseFloat(content.querySelector('.loan-extra-payment').value) || 0;
+                const kfw = content.querySelector('.loan-kfw').value;
+
+                if (amount > 0) {
+                    loans.push({ amount, rate, years, extraPayment, kfw });
+                }
+            });
+
+            const property = {
+                id: Date.now(),
+                objectName: document.getElementById('objectName').value,
+                location: document.getElementById('location').value,
+                city: document.getElementById('city').value,
+                propertyType: document.getElementById('propertyType').value,
+                unitCount: parseInt(document.getElementById('unitCount').value) || 1,
+                sizeQm: parseFloat(document.getElementById('sizeQm').value) || 100,
+                buildYear: parseInt(document.getElementById('buildYear').value) || 2000,
+                renovationStatus: document.getElementById('renovationStatus').value,
+                denkmalschutz: document.getElementById('denkmalschutz').value,
+                purchasePrice: parseFloat(document.getElementById('purchasePrice').value) || 0,
+                brokerFee: document.getElementById('brokerFee').value,
+                notaryFee: parseFloat(document.getElementById('notaryFee').value) || 0,
+                propertyTransferTax: parseFloat(document.getElementById('propertyTransferTax').value) || 0,
+                landRegistryFee: parseFloat(document.getElementById('landRegistryFee').value) || 0,
+                equity: parseFloat(document.getElementById('equity').value) || 0,
+                loans: loans,
+                monthlyRent: parseFloat(document.getElementById('monthlyRent').value) || 0,
+                vacancy: parseFloat(document.getElementById('vacancy').value) || 5,
+                rentGrowth: parseFloat(document.getElementById('rentGrowth').value) || 2.5,
+                otherIncome: parseFloat(document.getElementById('otherIncome').value) || 0,
+                propertyTax: parseFloat(document.getElementById('propertyTax').value) || 100,
+                insurance: parseFloat(document.getElementById('insurance').value) || 50,
+                utilities: parseFloat(document.getElementById('utilities').value) || 0,
+                management: parseFloat(document.getElementById('management').value) || 0,
+                maintenance: parseFloat(document.getElementById('maintenance').value) || 150,
+                maintenancePercent: parseFloat(document.getElementById('maintenancePercent').value) || 7.5,
+                cleaningCommunal: parseFloat(document.getElementById('cleaningCommunal').value) || 0,
+                streetCleaning: parseFloat(document.getElementById('streetCleaning').value) || 0,
+                personalTaxRate: parseFloat(document.getElementById('personalTaxRate').value) || 42,
+                buildingAfaPercent: parseFloat(document.getElementById('buildingAfaPercent').value) || 2,
+                movableAfaPercent: parseFloat(document.getElementById('movableAfaPercent').value) || 0,
+                other_costs: parseFloat(document.getElementById('other_costs').value) || 0,
+                inflation: 2
+            };
+
+            if (!property.objectName || !property.purchasePrice || !property.monthlyRent) {
+                showAlert('Bitte füllen Sie mindestens Objektname, Kaufpreis und Miete aus!', 'error');
+                return;
+            }
+
+            // Berechne Grunderwerbsteuer
+            const taxRate = calculateTaxes(property.location);
+            property.propertyTransferTax = property.purchasePrice * taxRate;
+
+            properties.push(property);
+            saveToLocalStorage();
+            clearForm();
+            updateUI();
+            showAlert('✅ Immobilie erfolgreich hinzugefügt!', 'success');
+        }
+
+        function deleteProperty(id) {
+            if (confirm('Diese Immobilie wirklich löschen?')) {
+                properties = properties.filter(p => p.id !== id);
+                saveToLocalStorage();
+                updateUI();
+                showAlert('🗑️ Immobilie gelöscht', 'success');
+            }
+        }
+
+        function updateUI() {
+            if (properties.length === 0) {
+                document.getElementById('statsContainer').innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><p>📌 Keine Immobilien hinzugefügt</p></div>';
+                document.getElementById('tableContainer').innerHTML = '<div class="empty-state"><p>📌 Keine Immobilien hinzugefügt</p></div>';
+                document.getElementById('comparisonTableContainer').innerHTML = '<div class="empty-state"><p>📌 Keine Immobilien hinzugefügt</p></div>';
+                return;
+            }
+
+            updateStats();
+            updateTable();
+            updateCharts();
+            updateComparison();
+        }
+
+        function updateStats() {
+            const calculations = properties.map(p => calculateProperty(p));
+            const avgGross = calculations.reduce((sum, c) => sum + c.grossReturn, 0) / calculations.length;
+            const avgNet = calculations.reduce((sum, c) => sum + c.netReturn, 0) / calculations.length;
+            const avgCashflow = calculations.reduce((sum, c) => sum + c.monthlyProfit, 0) / calculations.length;
+            const avgCapRate = calculations.reduce((sum, c) => sum + c.capRate, 0) / calculations.length;
+            const avgDscr = calculations.reduce((sum, c) => sum + c.dscr, 0) / calculations.length;
+            const avgCashOnCash = calculations.reduce((sum, c) => sum + c.cashOnCash, 0) / calculations.length;
+            const totalEquity = calculations.reduce((sum, c) => sum + c.equity, 0);
+            const totalTaxBenefit = calculations.reduce((sum, c) => sum + c.taxSavings, 0);
+
+            let statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">Anzahl Objekte</div>
+                    <div class="stat-value">${properties.length}</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-label">Ø Netto-Rendite</div>
+                    <div class="stat-value">${avgNet.toFixed(1)}%</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-label">Ø Cashflow/Monat</div>
+                    <div class="stat-value currency">${avgCashflow.toFixed(0)}€</div>
+                    <div class="stat-subtitle">= ${(avgCashflow * 12).toFixed(0)}€/Jahr</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Ø Cap Rate</div>
+                    <div class="stat-value">${avgCapRate.toFixed(2)}%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Ø DSCR</div>
+                    <div class="stat-value">${avgDscr.toFixed(2)}</div>
+                    <div class="stat-subtitle">${avgDscr >= 1.2 ? '✅ Gesund' : avgDscr >= 1 ? '⚠️ Grenzwertig' : '❌ Kritisch'}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Ø Cash-on-Cash</div>
+                    <div class="stat-value">${avgCashOnCash.toFixed(1)}%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Gesamt Eigenkapital</div>
+                    <div class="stat-value currency">${totalEquity.toFixed(0)}€</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-label">Steuervorteil (Jahr 1)</div>
+                    <div class="stat-value currency">${totalTaxBenefit.toFixed(0)}€</div>
+                </div>
+            `;
+
+            document.getElementById('statsContainer').innerHTML = statsHTML;
+        }
+
+        function updateTable() {
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Objekt</th>
+                            <th>Kaufpreis</th>
+                            <th>€/qm</th>
+                            <th>Miete/Mo</th>
+                            <th>Cashflow</th>
+                            <th>Netto-Rendite</th>
+                            <th>Cap Rate</th>
+                            <th>DSCR</th>
+                            <th>LTV</th>
+                            <th>Aktion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            properties.forEach(prop => {
+                const calc = calculateProperty(prop);
+                const cashflowClass = calc.monthlyProfit >= 0 ? '' : 'negative';
+                const dscrColor = calc.dscr >= 1.2 ? 'green' : calc.dscr >= 1 ? 'orange' : 'red';
+
+                html += `
+                    <tr>
+                        <td><strong>${prop.objectName}</strong><br><small>${prop.city || prop.location}</small></td>
+                        <td class="currency">${prop.purchasePrice.toLocaleString('de-DE')}€</td>
+                        <td>${calc.pricePerQm.toFixed(0)}€</td>
+                        <td class="currency">${calc.monthlyRent.toFixed(0)}€</td>
+                        <td class="currency ${cashflowClass}">${calc.monthlyProfit.toFixed(0)}€</td>
+                        <td class="percent">${calc.netReturn.toFixed(2)}%</td>
+                        <td class="percent">${calc.capRate.toFixed(2)}%</td>
+                        <td style="color: ${dscrColor}; font-weight: 600;">${calc.dscr.toFixed(2)}</td>
+                        <td class="percent">${calc.ltv.toFixed(1)}%</td>
+                        <td><button class="btn-danger btn-small" onclick="deleteProperty(${prop.id})">Löschen</button></td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            document.getElementById('tableContainer').innerHTML = html;
+        }
+
+        function updateCharts() {
+            const calculations = properties.map(p => calculateProperty(p));
+            const names = properties.map(p => p.objectName.substring(0, 12));
+
+            // Rendite Chart
+            destroyChart('chartRendite');
+            const ctxRendite = document.getElementById('chartRendite').getContext('2d');
+            chartInstances.rendite = new Chart(ctxRendite, {
+                type: 'bar',
+                data: {
+                    labels: names,
+                    datasets: [
+                        {
+                            label: 'Brutto-Rendite',
+                            data: calculations.map(c => c.grossReturn),
+                            backgroundColor: '#667eea',
+                            borderColor: '#667eea'
+                        },
+                        {
+                            label: 'Netto-Rendite',
+                            data: calculations.map(c => c.netReturn),
+                            backgroundColor: '#764ba2',
+                            borderColor: '#764ba2'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: v => v + '%' } }
+                    }
+                }
+            });
+
+            // Cashflow Chart
+            destroyChart('chartCashflow');
+            const ctxCashflow = document.getElementById('chartCashflow').getContext('2d');
+            chartInstances.cashflow = new Chart(ctxCashflow, {
+                type: 'bar',
+                data: {
+                    labels: names,
+                    datasets: [{
+                        label: 'Monatlicher Cashflow (€)',
+                        data: calculations.map(c => c.monthlyProfit),
+                        backgroundColor: calculations.map(c => c.monthlyProfit >= 0 ? '#28a745' : '#ff6b6b')
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // KPI Chart
+            destroyChart('chartKPI');
+            const ctxKPI = document.getElementById('chartKPI').getContext('2d');
+            chartInstances.kpi = new Chart(ctxKPI, {
+                type: 'radar',
+                data: {
+                    labels: ['Cap Rate', 'CoC Return', 'Net. Rendite', 'DSCR'],
+                    datasets: properties.map((prop, idx) => {
+                        const calc = calculations[idx];
+                        return {
+                            label: prop.objectName.substring(0, 10),
+                            data: [
+                                Math.min(calc.capRate, 15),
+                                Math.min(calc.cashOnCash, 20),
+                                Math.min(calc.netReturn, 15),
+                                Math.min(calc.dscr * 20, 20)
+                            ],
+                            borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                            backgroundColor: `hsla(${Math.random() * 360}, 70%, 50%, 0.2)`
+                        };
+                    })
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { r: { beginAtZero: true, max: 20 } }
+                }
+            });
+
+            // Debt Reduction Chart
+            destroyChart('chartDebtReduction');
+            const years = [0, 5, 10, 15, 20, 25, 30];
+            const ctxDebt = document.getElementById('chartDebtReduction').getContext('2d');
+            chartInstances.debt = new Chart(ctxDebt, {
+                type: 'line',
+                data: {
+                    labels: years.map(y => `Jahr ${y}`),
+                    datasets: properties.map((prop, idx) => {
+                        const calc = calculateProperty(prop);
+                        const debtData = years.map(y => {
+                            // Vereinfachte Schuldabbau-Berechnung
+                            return calc.loanAmount * Math.pow(0.95, y);
+                        });
+                        return {
+                            label: prop.objectName.substring(0, 10),
+                            data: debtData,
+                            borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                            backgroundColor: `hsla(${Math.random() * 360}, 70%, 50%, 0.1)`,
+                            tension: 0.4
+                        };
+                    })
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { ticks: { callback: v => (v / 1000).toFixed(0) + 'k€' } } }
+                }
+            });
+        }
+
+        function updateComparison() {
+            const calculations = properties.map(p => calculateProperty(p));
+
+            // Rankings
+            const cashflowRanking = [...properties].sort((a, b) =>
+                calculateProperty(b).monthlyProfit - calculateProperty(a).monthlyProfit
+            ).slice(0, 3);
+
+            const netReturnRanking = [...properties].sort((a, b) =>
+                calculateProperty(b).netReturn - calculateProperty(a).netReturn
+            ).slice(0, 3);
+
+            const capRateRanking = [...properties].sort((a, b) =>
+                calculateProperty(b).capRate - calculateProperty(a).capRate
+            ).slice(0, 3);
+
+            document.getElementById('rankingCashflow').innerHTML = cashflowRanking.map((p, i) => {
+                const calc = calculateProperty(p);
+                return `<div style="margin-bottom: 10px;"><strong>#${i+1}</strong> ${p.objectName}: <span class="currency">${calc.monthlyProfit.toFixed(0)}€/Mo</span></div>`;
+            }).join('');
+
+            document.getElementById('rankingNetReturn').innerHTML = netReturnRanking.map((p, i) => {
+                const calc = calculateProperty(p);
+                return `<div style="margin-bottom: 10px;"><strong>#${i+1}</strong> ${p.objectName}: <span class="percent">${calc.netReturn.toFixed(2)}%</span></div>`;
+            }).join('');
+
+            document.getElementById('rankingCapRate').innerHTML = capRateRanking.map((p, i) => {
+                const calc = calculateProperty(p);
+                return `<div style="margin-bottom: 10px;"><strong>#${i+1}</strong> ${p.objectName}: <span class="percent">${calc.capRate.toFixed(2)}%</span></div>`;
+            }).join('');
+
+            // Portfolio Stats
+            const totalEquity = calculations.reduce((sum, c) => sum + c.equity, 0);
+            const totalLoans = calculations.reduce((sum, c) => sum + c.loanAmount, 0);
+            const avgNetReturn = calculations.reduce((sum, c) => sum + c.netReturn, 0) / calculations.length;
+            const totalCashflow = calculations.reduce((sum, c) => sum + c.monthlyProfit, 0);
+            const avgLTV = calculations.reduce((sum, c) => sum + c.ltv, 0) / calculations.length;
+            const maxRisk = Math.min(...calculations.map(c => c.dscr));
+            const minLTV = Math.min(...calculations.map(c => c.ltv));
+
+            document.getElementById('portEqualityTotal').textContent = totalEquity.toLocaleString('de-DE') + '€';
+            document.getElementById('portAvgNetReturn').textContent = avgNetReturn.toFixed(1) + '%';
+            document.getElementById('portTotalCashflow').textContent = totalCashflow.toFixed(0) + '€';
+            document.getElementById('portAvgLTV').textContent = avgLTV.toFixed(1) + '%';
+            document.getElementById('portMaxRisk').textContent = maxRisk.toFixed(2) + ' DSCR';
+            document.getElementById('portMinLTV').textContent = minLTV.toFixed(1) + '%';
+            document.getElementById('portCount').textContent = properties.length;
+
+            // Comparison Table
+            let comparisonHTML = `<table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th style="width: 200px;">Objekt</th>
+                        <th>Kaufpreis</th>
+                        <th>Brutto-Rendite</th>
+                        <th>Netto-Rendite</th>
+                        <th>Cap Rate</th>
+                        <th>Cash-on-Cash</th>
+                        <th>DSCR</th>
+                        <th>LTV</th>
+                        <th>Mietmultiplikator</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            properties.forEach(prop => {
+                const calc = calculateProperty(prop);
+                comparisonHTML += `
+                    <tr>
+                        <td><strong>${prop.objectName}</strong></td>
+                        <td class="currency">${prop.purchasePrice.toLocaleString('de-DE')}€</td>
+                        <td class="percent">${calc.grossReturn.toFixed(2)}%</td>
+                        <td class="percent">${calc.netReturn.toFixed(2)}%</td>
+                        <td class="percent">${calc.capRate.toFixed(2)}%</td>
+                        <td class="percent">${calc.cashOnCash.toFixed(2)}%</td>
+                        <td style="color: ${calc.dscr >= 1.2 ? '#28a745' : calc.dscr >= 1 ? '#ffc107' : '#ff6b6b'};">${calc.dscr.toFixed(2)}</td>
+                        <td class="percent">${calc.ltv.toFixed(1)}%</td>
+                        <td>${calc.rentMultiplier.toFixed(1)} Jahre</td>
+                    </tr>
+                `;
+            });
+
+            comparisonHTML += '</tbody></table>';
+            document.getElementById('comparisonTableContainer').innerHTML = `<div class="table-container">${comparisonHTML}</div>`;
+        }
+
+        function calculateScenarios() {
+            if (properties.length === 0) {
+                showAlert('Bitte fügen Sie mindestens eine Immobilie hinzu!', 'error');
+                return;
+            }
+
+            const scenarios = ['best', 'base', 'worst', 'crisis'];
+            const results = {};
+
+            scenarios.forEach(scenario => {
+                const rentGrowthInput = document.querySelector(`.scenario-rent-${scenario}`);
+                const rentGrowth = parseFloat(rentGrowthInput.value) / 100 || 0;
+
+                let html = `<div class="card" style="margin-bottom: 20px;">
+                    <div class="card-header">${scenario.toUpperCase()} CASE - 10 Jahre Projektion</div>
+                    <div class="scenarios">`;
+
+                properties.forEach(prop => {
+                    const years = [1, 5, 10];
+                    const projections = years.map(year => {
+                        const calc = calculateProperty(prop);
+                        const rentMultiplier = Math.pow(1 + rentGrowth, year);
+                        return {
+                            year: year,
+                            profit: calc.monthlyProfit * rentMultiplier * 12,
+                            equity: calc.equity + (calc.monthlyProfit * rentMultiplier * 12 * year)
+                        };
+                    });
+
+                    const year10 = projections[2];
+                    html += `
+                        <div class="scenario-card">
+                            <div class="scenario-title">${prop.objectName}</div>
+                            <div style="margin-bottom: 10px;">
+                                <div style="font-size: 0.9em; color: #666;">Nach 10 Jahren:</div>
+                                <div class="scenario-value">${year10.profit.toFixed(0)}€/Jahr</div>
+                                <div style="font-size: 0.85em; color: #999;">Eigenkapital: ${year10.equity.toFixed(0)}€</div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div></div>';
+                results[scenario] = html;
+            });
+
+            let scenariosHTML = '';
+            scenarios.forEach(s => scenariosHTML += results[s]);
+
+            document.getElementById('scenariosResultContainer').innerHTML = scenariosHTML;
+        }
+
+        function generateAmortization() {
+            if (properties.length === 0) {
+                showAlert('Bitte fügen Sie mindestens eine Immobilie hinzu!', 'error');
+                return;
+            }
+
+            const years = parseInt(document.getElementById('amortYears').value) || 30;
+            let html = '';
+
+            properties.forEach(prop => {
+                const calc = calculateProperty(prop);
+                html += `<div class="card"><div class="card-header">${prop.objectName}</div>
+                    <div class="table-container">
+                    <table style="font-size: 0.9em;">
+                        <thead>
+                            <tr>
+                                <th>Jahr</th>
+                                <th>Schuldenstand</th>
+                                <th>Tilgung</th>
+                                <th>Zinsen</th>
+                                <th>Eigenkapital</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                let debt = calc.loanAmount;
+                const monthlyPayment = calc.monthlyPayment;
+                let equity = prop.equity;
+
+                for (let year = 1; year <= years && debt > 0; year++) {
+                    let yearlyInterest = 0;
+                    let yearlyPrincipal = 0;
+
+                    for (let month = 0; month < 12 && debt > 0; month++) {
+                        const interest = debt * 0.035 / 12; // Vereinfacht
+                        const principal = Math.min(monthlyPayment - interest, debt);
+                        yearlyInterest += interest;
+                        yearlyPrincipal += principal;
+                        debt -= principal;
+                    }
+
+                    equity += yearlyPrincipal + (calc.monthlyProfit * 12);
+
+                    html += `<tr>
+                        <td>${year}</td>
+                        <td class="currency">${Math.max(0, debt).toFixed(0)}€</td>
+                        <td class="currency">${yearlyPrincipal.toFixed(0)}€</td>
+                        <td class="currency">${yearlyInterest.toFixed(0)}€</td>
+                        <td class="currency">${equity.toFixed(0)}€</td>
+                    </tr>`;
+                }
+
+                html += '</tbody></table></div></div>';
+            });
+
+            document.getElementById('amortizationTableContainer').innerHTML = html;
+        }
+
+        function generatePDFReport() {
+            if (properties.length === 0) {
+                showAlert('Bitte fügen Sie mindestens eine Immobilie hinzu!', 'error');
+                return;
+            }
+
+            const element = document.querySelector('.container');
+            const opt = {
+                margin: 10,
+                filename: 'immobilien-report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+            showAlert('✅ PDF-Report generiert!', 'success');
+        }
+
+        function exportToExcel() {
+            if (properties.length === 0) {
+                showAlert('Bitte fügen Sie mindestens eine Immobilie hinzu!', 'error');
+                return;
+            }
+
+            const calculations = properties.map(p => calculateProperty(p));
+            let csv = 'Objekt;Kaufpreis;€/qm;Miete/Monat;Cashflow/Monat;Jahresprofitaussichten;Brutto-Rendite;Netto-Rendite;Cap Rate;Cash-on-Cash;DSCR;LTV;Mietmultiplikator\n';
+
+            properties.forEach((prop, idx) => {
+                const calc = calculations[idx];
+                csv += `"${prop.objectName}";"${prop.purchasePrice}";"${calc.pricePerQm.toFixed(0)}";"${calc.monthlyRent.toFixed(0)}";"${calc.monthlyProfit.toFixed(0)}";"${(calc.monthlyProfit * 12).toFixed(0)}";"${calc.grossReturn.toFixed(2)}";"${calc.netReturn.toFixed(2)}";"${calc.capRate.toFixed(2)}";"${calc.cashOnCash.toFixed(2)}";"${calc.dscr.toFixed(2)}";"${calc.ltv.toFixed(1)}";"${calc.rentMultiplier.toFixed(1)}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `immobilien-analyse-${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            showAlert('✅ Excel-Export erstellt!', 'success');
+        }
+
+        function exportJSON() {
+            const json = JSON.stringify(properties, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `immobilien-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            showAlert('✅ JSON-Backup erstellt!', 'success');
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    properties = JSON.parse(e.target.result);
+                    saveToLocalStorage();
+                    updateUI();
+                    showAlert('✅ Daten importiert!', 'success');
+                } catch {
+                    showAlert('❌ Import fehlgeschlagen', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function deleteAllData() {
+            if (confirm('⚠️ Alle Daten wirklich löschen? Dies kann nicht rückgängig gemacht werden!')) {
+                properties = [];
+                localStorage.removeItem('immobilienDataPro');
+                updateUI();
+                showAlert('🗑️ Alle Daten gelöscht', 'success');
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('objectName').value = '';
+            document.getElementById('city').value = '';
+            document.getElementById('sizeQm').value = '';
+            document.getElementById('buildYear').value = '';
+            document.getElementById('purchasePrice').value = '';
+            document.getElementById('brokerFee').value = '';
+            document.getElementById('notaryFee').value = '';
+            document.getElementById('equity').value = '';
+            document.getElementById('monthlyRent').value = '';
+            document.getElementById('vacancy').value = '5';
+            document.getElementById('rentGrowth').value = '2.5';
+            document.getElementById('otherIncome').value = '0';
+            document.getElementById('propertyTax').value = '100';
+            document.getElementById('insurance').value = '50';
+            document.getElementById('utilities').value = '';
+            document.getElementById('management').value = '';
+            document.getElementById('maintenance').value = '150';
+            document.getElementById('cleaningCommunal').value = '';
+            document.getElementById('streetCleaning').value = '';
+            document.getElementById('personalTaxRate').value = '42';
+            document.getElementById('buildingAfaPercent').value = '2';
+            document.getElementById('movableAfaPercent').value = '0';
+            document.getElementById('other_costs').value = '0';
+
+            // Reset Loans
+            document.getElementById('loansContainer').innerHTML = `
+                <div class="accordion">
+                    <div class="accordion-header active" onclick="toggleAccordion(this)">
+                        <span>📌 Darlehen 1</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="accordion-content active">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Darlehensbetrag (€)</label>
+                                <input type="number" class="loan-amount" placeholder="400000" step="10000">
+                            </div>
+                            <div class="form-group">
+                                <label>Zinssatz (%)</label>
+                                <input type="number" class="loan-rate" placeholder="3.5" step="0.1" min="0" max="20">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Laufzeit (Jahre)</label>
+                                <input type="number" class="loan-years" placeholder="25" step="1" min="1" max="50" value="25">
+                            </div>
+                            <div class="form-group">
+                                <label>Sondertilgung p.a. (%)</label>
+                                <input type="number" class="loan-extra-payment" placeholder="0" step="0.5" min="0" max="50" value="0">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>KfW-Förderung</label>
+                                <select class="loan-kfw">
+                                    <option>Keine</option>
+                                    <option>KfW-40 Effizienzhaus</option>
+                                    <option>KfW-55 Effizienzhaus</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert show alert-${type}`;
+            setTimeout(() => alert.classList.remove('show'), 4000);
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('immobilienDataPro', JSON.stringify(properties));
+        }
+
+        function loadFromLocalStorage() {
+            const data = localStorage.getItem('immobilienDataPro');
+            if (data) properties = JSON.parse(data);
+        }
+
+        function destroyChart(chartId) {
+            const chartKey = chartId.replace('chart', '').toLowerCase();
+            if (chartInstances[chartKey]) {
+                chartInstances[chartKey].destroy();
+                delete chartInstances[chartKey];
+            }
+        }
+
+        // Event-Listener für automatische Berechnungen
+        document.getElementById('purchasePrice')?.addEventListener('input', function() {
+            const price = parseFloat(this.value) || 0;
+            const sqm = parseFloat(document.getElementById('sizeQm').value) || 1;
+            document.getElementById('pricePerQm').value = (price / sqm).toFixed(2);
+
+            const equity = parseFloat(document.getElementById('equity').value) || 0;
+            document.getElementById('equityPercent').value = equity > 0 ? ((equity / price) * 100).toFixed(1) : '0';
+        });
+
+        document.getElementById('sizeQm')?.addEventListener('input', function() {
+            const price = parseFloat(document.getElementById('purchasePrice').value) || 0;
+            const sqm = parseFloat(this.value) || 1;
+            document.getElementById('pricePerQm').value = (price / sqm).toFixed(2);
+        });
+
+        document.getElementById('monthlyRent')?.addEventListener('input', function() {
+            const rent = parseFloat(this.value) || 0;
+            const sqm = parseFloat(document.getElementById('sizeQm').value) || 1;
+            document.getElementById('rentPerQm').value = (rent / sqm).toFixed(2);
+        });
+
+        document.getElementById('equity')?.addEventListener('input', function() {
+            const equity = parseFloat(this.value) || 0;
+            const price = parseFloat(document.getElementById('purchasePrice').value) || 1;
+            document.getElementById('equityPercent').value = price > 0 ? ((equity / price) * 100).toFixed(1) : '0';
+        });
+    </script>
+</body>
+</html>

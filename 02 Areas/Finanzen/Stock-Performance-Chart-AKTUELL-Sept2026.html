@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktienkurs-Verlauf Mai-September 2026 (AKTUELL)</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #0f1419;
+            color: #e4e6eb;
+            padding: 24px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 32px;
+            border-bottom: 2px solid #2d3748;
+            padding-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .subtitle {
+            color: #a0aec0;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .update-badge {
+            display: inline-block;
+            background: #68d391;
+            color: #0f1419;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .chart-card {
+            background: #1a1f2e;
+            border-radius: 12px;
+            border: 1px solid #2d3748;
+            padding: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #cbd5e0;
+        }
+
+        .chart {
+            width: 100%;
+            height: 400px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .stat-change {
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .positive { color: #68d391; }
+        .negative { color: #fc8181; }
+        .neutral { color: #cbd5e0; }
+
+        .legend-section {
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .legend-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #cbd5e0;
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .performance-summary {
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 32px;
+        }
+
+        .summary-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #cbd5e0;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .summary-table th {
+            text-align: left;
+            padding: 8px;
+            color: #a0aec0;
+            border-bottom: 1px solid #2d3748;
+            font-weight: 500;
+        }
+
+        .summary-table td {
+            padding: 8px;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .summary-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ticker {
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .alerts {
+            background: #1a1f2e;
+            border: 1px solid #d69e2e;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 32px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            color: #fbd38d;
+            margin-bottom: 4px;
+        }
+
+        .alert-text {
+            font-size: 13px;
+            color: #cbd5e0;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 32px;
+            text-align: center;
+        }
+
+        @media (max-width: 1200px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📈 Aktienkurs-Verlauf Mai-September 2026</h1>
+            <p class="subtitle">Live-Update mit aktuellen Werten vom 4. September 2026</p>
+            <span class="update-badge">🔄 Aktualisiert 2026-09-05</span>
+        </header>
+
+        <!-- Alerts -->
+        <div class="alerts">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+                <div class="alert-title">Tesla Cybercab Impact</div>
+                <div class="alert-text">Tesla fiel 5.92% am 4. Sept nach Cybercab Launch. NHTSA-Regulierungsprüfung läuft.</div>
+            </div>
+        </div>
+
+        <!-- Legende -->
+        <div class="legend-section">
+            <div class="legend-title">📊 Farb-Legende</div>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #228b22;"></div>
+                    <span><strong>SAP</strong> (DAX)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #1e90ff;"></div>
+                    <span><strong>Siemens</strong> (DAX)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #00bfff;"></div>
+                    <span><strong>Allianz</strong> (DAX)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ff8c00;"></div>
+                    <span><strong>Apple</strong> (NASDAQ)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #dc143c;"></div>
+                    <span><strong>Microsoft</strong> (NASDAQ)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #8b0000;"></div>
+                    <span><strong>Tesla</strong> (NASDAQ)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div class="chart-title">💶 DAX-INDIZES (EUR)</div>
+                <div id="eurChart" class="chart"></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">💵 US-TECH (USD)</div>
+                <div id="usdChart" class="chart"></div>
+            </div>
+        </div>
+
+        <!-- Current Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">🏆 Best Performer (Aug→Sept)</div>
+                <div class="stat-value">Apple <span class="positive">+1.71%</span></div>
+                <div class="stat-change">$314.58 → $319.97</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">📉 Worst Performer (Aug→Sept)</div>
+                <div class="stat-value">Siemens <span class="negative">-5.93%</span></div>
+                <div class="stat-change">€289.85 → €272.65</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">⚡ Most Volatile</div>
+                <div class="stat-value">Tesla <span class="negative">-5.92%</span> Tag</div>
+                <div class="stat-change">Cybercab Event Backlash</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">💰 Stabilster</div>
+                <div class="stat-value">Allianz <span class="neutral">-0.53%</span></div>
+                <div class="stat-change">3.79% Dividend Yield</div>
+            </div>
+        </div>
+
+        <!-- Performance Summary -->
+        <div class="performance-summary">
+            <div class="summary-title">📊 Performance-Übersicht (August → September 4, 2026)</div>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Aktie</th>
+                        <th>Aug-Preis</th>
+                        <th>Sept-Preis</th>
+                        <th>Änderung (€/$)</th>
+                        <th>Änderung (%)</th>
+                        <th>Mai-Sept Trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ticker">SAP</td>
+                        <td>€189.88</td>
+                        <td>€189.88*</td>
+                        <td class="neutral">±€0.00</td>
+                        <td class="neutral"><strong>0.0%</strong></td>
+                        <td class="positive">+27.1% (Mai→Aug)</td>
+                    </tr>
+                    <tr>
+                        <td class="ticker">Apple</td>
+                        <td>$314.58</td>
+                        <td>$319.97</td>
+                        <td class="positive">+$5.39</td>
+                        <td class="positive"><strong>+1.71%</strong> ✅</td>
+                        <td class="positive">+12.3% (Mai→Sept)</td>
+                    </tr>
+                    <tr>
+                        <td class="ticker">Microsoft</td>
+                        <td>$505.06</td>
+                        <td>$499.70</td>
+                        <td class="negative">−$5.36</td>
+                        <td class="negative"><strong>−1.06%</strong></td>
+                        <td class="positive">+20.6% (Mai→Sept)</td>
+                    </tr>
+                    <tr>
+                        <td class="ticker">Siemens</td>
+                        <td>€289.85</td>
+                        <td>€272.65</td>
+                        <td class="negative">−€17.20</td>
+                        <td class="negative"><strong>−5.93%</strong> 📉</td>
+                        <td class="neutral">Start Juli</td>
+                    </tr>
+                    <tr>
+                        <td class="ticker">Allianz</td>
+                        <td>€453.00</td>
+                        <td>€450.60</td>
+                        <td class="negative">−€2.40</td>
+                        <td class="negative"><strong>−0.53%</strong></td>
+                        <td class="neutral">Start Juli</td>
+                    </tr>
+                    <tr style="background: #2d3748;">
+                        <td class="ticker">Tesla</td>
+                        <td>$354.81</td>
+                        <td>$354.08</td>
+                        <td class="negative">−$0.73</td>
+                        <td class="negative"><strong>−0.21%</strong> (Sept)</td>
+                        <td class="negative">−9.2% (Mai→Sept)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 11px; color: #718096; margin-top: 12px;">* SAP: Keine neuen EUR-Daten seit 27. August; USD-Kurs: $215.11 (-0.88%)</p>
+        </div>
+
+        <div class="footer">
+            <p>📊 Marktdaten aus: Memoria Vault | Karl Market Watch | 2026-09-05</p>
+            <p style="margin-top: 8px; color: #4a5568;">Daten: Yahoo Finance | Keine Anlageberatung | Für Finanzplanung (Norwegen-Emigration)</p>
+        </div>
+    </div>
+
+    <script>
+        // EUR Chart Data (DAX) - Extended to Sept
+        const eurData = [
+            {
+                x: ['Mai', 'Juni', 'Juli', 'Aug', 'Sept 4'],
+                y: [149.32, 134.14, 140.88, 189.88, 189.88],
+                name: 'SAP',
+                type: 'scatter',
+                mode: 'lines+markers',
+                line: { color: '#228b22', width: 3 },
+                marker: { size: 8, symbol: 'circle' },
+                hovertemplate: 'SAP<br>%{x}<br>€%{y:.2f}<extra></extra>'
+            },
+            {
+                x: ['Juli', 'Aug', 'Sept 4'],
+                y: [271.25, 289.85, 272.65],
+                name: 'Siemens (−5.93%)',
+                type: 'scatter',
+                mode: 'lines+markers',
+                line: { color: '#1e90ff', width: 3 },
+                marker: { size: 8, symbol: 'circle' },
+                hovertemplate: 'Siemens<br>%{x}<br>€%{y:.2f}<extra></extra>'
+            },
+            {
+                x: ['Juli', 'Aug', 'Sept 4'],
+                y: [428.20, 453.00, 450.60],
+                name: 'Allianz (−0.53%)',
+                type: 'scatter',
+                mode: 'lines+markers',
+                line: { color: '#00bfff', width: 3 },
+                marker: { size: 8, symbol: 'circle' },
+                hovertemplate: 'Allianz<br>%{x}<br>€%{y:.2f}<extra></extra>'
+            }
+        ];
+
+        // USD Chart Data (Tech) - Extended to Sept
+        const usdData = [
+            {
+                x: ['Mai', 'Juni', 'Juli', 'Aug', 'Sept 4'],
+                y: [280.14, 289.36, 308.91, 314.58, 319.97],
+                name: 'Apple (+1.71%)',
+                type: 'scatter',
+                mode: 'lines+markers',
+                line: { color: '#ff8c00', width: 3 },
+                marker: { size: 8, symbol: 'circle' },
+                hovertemplate: 'Apple<br>%{x}<br>$%{y:.2f}<extra></extra>'
+            },
+            {
+                x: ['Mai', 'Juni', 'Juli', 'Aug', 'Sept 4'],
+                y: [414.44, 373.02, 464.72, 505.06, 499.70],
+                name: 'Microsoft (−1.06%)',
+                type: 'scatter',
+                mode: 'lines+markers',
+                line: { color: '#dc143c', width: 3 },
+                marker: { size: 8, symbol: 'circle' },
+                hovertemplate: 'Microsoft<br>%{x}<br>$%{y:.2f}<extra></extra>'
+            },
+            {
+                x: ['Mai', 'Juni', 'Juli', 'Aug', 'Sept 4'],
+                y: [390.82, 420.60, 313.03, 354.81, 354.08],
+                name: 'Tesla (−0.21%)',
+                type: 'scatter',
+                mode: 'lines+markers',
+                line: { color: '#8b0000', width: 3 },
+                marker: { size: 8, symbol: 'circle' },
+                hovertemplate: 'Tesla<br>%{x}<br>$%{y:.2f}<extra></extra>'
+            }
+        ];
+
+        // EUR Chart Layout
+        const eurLayout = {
+            title: '',
+            xaxis: {
+                title: '',
+                gridcolor: '#2d3748',
+                showgrid: true,
+                zeroline: false,
+                color: '#a0aec0'
+            },
+            yaxis: {
+                title: 'Preis (EUR)',
+                gridcolor: '#2d3748',
+                showgrid: true,
+                zeroline: false,
+                color: '#a0aec0'
+            },
+            plot_bgcolor: '#0f1419',
+            paper_bgcolor: '#1a1f2e',
+            font: { color: '#e4e6eb', family: 'system-ui, sans-serif', size: 12 },
+            hovermode: 'x unified',
+            legend: {
+                x: 0.02,
+                y: 0.98,
+                bgcolor: 'rgba(15,20,25,0.9)',
+                bordercolor: '#2d3748',
+                borderwidth: 1
+            },
+            margin: { l: 60, r: 20, t: 20, b: 50 }
+        };
+
+        // USD Chart Layout
+        const usdLayout = {
+            title: '',
+            xaxis: {
+                title: '',
+                gridcolor: '#2d3748',
+                showgrid: true,
+                zeroline: false,
+                color: '#a0aec0'
+            },
+            yaxis: {
+                title: 'Preis (USD)',
+                gridcolor: '#2d3748',
+                showgrid: true,
+                zeroline: false,
+                color: '#a0aec0'
+            },
+            plot_bgcolor: '#0f1419',
+            paper_bgcolor: '#1a1f2e',
+            font: { color: '#e4e6eb', family: 'system-ui, sans-serif', size: 12 },
+            hovermode: 'x unified',
+            legend: {
+                x: 0.02,
+                y: 0.98,
+                bgcolor: 'rgba(15,20,25,0.9)',
+                bordercolor: '#2d3748',
+                borderwidth: 1
+            },
+            margin: { l: 60, r: 20, t: 20, b: 50 }
+        };
+
+        const config = { responsive: true, displayModeBar: true, modeBarButtonsToRemove: ['lasso2d', 'select2d'] };
+
+        Plotly.newPlot('eurChart', eurData, eurLayout, config);
+        Plotly.newPlot('usdChart', usdData, usdLayout, config);
+    </script>
+</body>
+</html>

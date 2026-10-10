@@ -1,0 +1,503 @@
+{
+  "metadata": {
+    "created": "2026-07-17",
+    "description": "Investment-Algorithmus Datentemplate für 15 Instrumente (Aktien, ETFs, Anleihen, Edelmetalle, Krypto)",
+    "data_sources": [
+      "Yahoo Finance API (aktien, etfs)",
+      "Alpha Vantage (technische indikatoren)",
+      "TradingView (bollinger bands, volatilität)",
+      "bullion.de oder Bundesbank (edelmetalle)",
+      "CoinMarketCap / CoinGecko (krypto)"
+    ],
+    "last_updated": "[Dein Abrufdatum hier]",
+    "note": "Platzhalter für manuelle API-Befüllung. Keine erfundenen Zahlen. ISINs recherchiert 17.07.2026.",
+    "isin_sources": "Deutsche Börse, boerse.de, finanzen.net, justetf.com, isin.org"
+  },
+  "instruments": [
+    {
+      "id": 1,
+      "symbol": "SAP",
+      "type": "Aktie (DAX)",
+      "isin": "DE0007164600",
+      "currency": "EUR",
+      "price_data": {
+        "current_price": "[API: current price]",
+        "price_date": "[API: fetch date/time]",
+        "changes": {
+          "1d_percent": "[API: 1 day %]",
+          "1w_percent": "[API: 1 week %]",
+          "1m_percent": "[API: 1 month %]",
+          "ytd_percent": "[API: YTD %]"
+        },
+        "52w_range": {
+          "low": "[API: 52w low]",
+          "high": "[API: 52w high]"
+        }
+      },
+      "technical_indicators": {
+        "volatility_30d_annualized": "[TradingView/Alpha Vantage]",
+        "volatility_90d_annualized": "[TradingView/Alpha Vantage]",
+        "rsi_14": "[TradingView: RSI(14)]",
+        "macd_value": "[TradingView: MACD]",
+        "macd_signal": "[TradingView: Signal]",
+        "moving_average_50d": "[TradingView: MA(50)]",
+        "moving_average_200d": "[TradingView: MA(200)]",
+        "bollinger_bands_20d": {
+          "upper": "[TradingView: +2σ]",
+          "middle": "[TradingView: SMA20]",
+          "lower": "[TradingView: -2σ]"
+        },
+        "atr_14": "[TradingView: ATR(14)]"
+      },
+      "sources": {
+        "price": "Yahoo Finance API",
+        "technicals": "TradingView / Alpha Vantage",
+        "fetch_timestamp": "[ISO 8601 datetime]"
+      },
+      "notes": "DAX-Komponente, Tech-Sektor"
+    },
+    {
+      "id": 2,
+      "symbol": "SIE",
+      "type": "Aktie (DAX)",
+      "isin": "DE0007236101",
+      "currency": "EUR",
+      "price_data": {
+        "current_price": "[API: current price]",
+        "price_date": "[API: fetch date/time]",
+        "changes": {
+          "1d_percent": "[API: 1 day %]",
+          "1w_percent": "[API: 1 week %]",
+          "1m_percent": "[API: 1 month %]",
+          "ytd_percent": "[API: YTD %]"
+        },
+        "52w_range": {
+          "low": "[API: 52w low]",
+          "high": "[API: 52w high]"
+        }
+      },
+      "technical_indicators": {
+        "volatility_30d_annualized": "[TradingView/Alpha Vantage]",
+        "volatility_90d_annualized": "[TradingView/Alpha Vantage]",
+        "rsi_14": "[TradingView: RSI(14)]",
+        "macd_value": "[TradingView: MACD]",
+        "macd_signal": "[TradingView: Signal]",
+        "moving_average_50d": "[TradingView: MA(50)]",
+        "moving_average_200d": "[TradingView: MA(200)]",
+        "bollinger_bands_20d": {
+          "upper": "[TradingView: +2σ]",
+          "middle": "[TradingView: SMA20]",
+          "lower": "[TradingView: -2σ]"
+        },
+        "atr_14": "[TradingView: ATR(14)]"
+      },
+      "sources": {
+        "price": "Yahoo Finance API",
+        "technicals": "TradingView / Alpha Vantage",
+        "fetch_timestamp": "[ISO 8601 datetime]"
+      },
+      "notes": "DAX-Komponente, Industrie"
+    },
+    {
+      "id": 3,
+      "symbol": "ALV",
+      "type": "Aktie (DAX)",
+      "isin": "DE0008404005",
+      "currency": "EUR",
+      "price_data": {
+        "current_price": "[API: current price]",
+        "price_date": "[API: fetch date/time]",
+        "changes": {
+          "1d_percent": "[API: 1 day %]",
+          "1w_percent": "[API: 1 week %]",
+          "1m_percent": "[API: 1 month %]",
+          "ytd_percent": "[API: YTD %]"
+        },
+        "52w_range": {
+          "low": "[API: 52w low]",
+          "high": "[API: 52w high]"
+        }
+      },
+      "technical_indicators": {
+        "volatility_30d_annualized": "[TradingView/Alpha Vantage]",
+        "volatility_90d_annualized": "[TradingView/Alpha Vantage]",
+        "rsi_14": "[TradingView: RSI(14)]",
+        "macd_value": "[TradingView: MACD]",
+        "macd_signal": "[TradingView: Signal]",
+        "moving_average_50d": "[TradingView: MA(50)]",
+        "moving_average_200d": "[TradingView: MA(200)]",
+        "bollinger_bands_20d": {
+          "upper": "[TradingView: +2σ]",
+          "middle": "[TradingView: SMA20]",
+          "lower": "[TradingView: -2σ]"
+        },
+        "atr_14": "[TradingView: ATR(14)]"
+      },
+      "sources": {
+        "price": "Yahoo Finance API",
+        "technicals": "TradingView / Alpha Vantage",
+        "fetch_timestamp": "[ISO 8601 datetime]"
+      },
+      "notes": "DAX-Komponente, Finanzen/Versicherung"
+    },
+    {
+      "id": 4,
+      "symbol": "AAPL",
+      "type": "Aktie (US-Tech)",
+      "isin": "US0378331005",
+      "currency": "USD",
+      "price_data": {
+        "current_price": "[API: current price]",
+        "price_date": "[API: fetch date/time UTC]",
+        "changes": {
+          "1d_percent": "[API: 1 day %]",
+          "1w_percent": "[API: 1 week %]",
+          "1m_percent": "[API: 1 month %]",
+          "ytd_percent": "[API: YTD %]"
+        },
+        "52w_range": {
+          "low": "[API: 52w low]",
+          "high": "[API: 52w high]"
+        },
+        "market_cap_usd": "[API: Market Cap]",
+        "pe_ratio": "[API: P/E]"
+      },
+      "technical_indicators": {
+        "volatility_30d_annualized": "[TradingView/Alpha Vantage]",
+        "volatility_90d_annualized": "[TradingView/Alpha Vantage]",
+        "rsi_14": "[TradingView: RSI(14)]",
+        "macd_value": "[TradingView: MACD]",
+        "macd_signal": "[TradingView: Signal]",
+        "moving_average_50d": "[TradingView: MA(50)]",
+        "moving_average_200d": "[TradingView: MA(200)]",
+        "bollinger_bands_20d": {
+          "upper": "[TradingView: +2σ]",
+          "middle": "[TradingView: SMA20]",
+          "lower": "[TradingView: -2σ]"
+        },
+        "atr_14": "[TradingView: ATR(14)]"
+      },
+      "sources": {
+        "price": "Yahoo Finance API",
+        "technicals": "TradingView / Alpha Vantage",
+        "fetch_timestamp": "[ISO 8601 datetime UTC]"
+      },
+      "notes": "US-Tech Large Cap"
+    },
+    {
+      "id": 5,
+      "symbol": "MSFT",
+      "type": "Aktie (US-Tech)",
+      "isin": "US5949181045",
+      "currency": "USD",
+      "price_data": {
+        "current_price": "[API: current price]",
+        "price_date": "[API: fetch date/time UTC]",
+        "changes": {
+          "1d_percent": "[API: 1 day %]",
+          "1w_percent": "[API: 1 week %]",
+          "1m_percent": "[API: 1 month %]",
+          "ytd_percent": "[API: YTD %]"
+        },
+        "52w_range": {
+          "low": "[API: 52w low]",
+          "high": "[API: 52w high]"
+        },
+        "market_cap_usd": "[API: Market Cap]",
+        "pe_ratio": "[API: P/E]"
+      },
+      "technical_indicators": {
+        "volatility_30d_annualized": "[TradingView/Alpha Vantage]",
+        "volatility_90d_annualized": "[TradingView/Alpha Vantage]",
+        "rsi_14": "[TradingView: RSI(14)]",
+        "macd_value": "[TradingView: MACD]",
+        "macd_signal": "[TradingView: Signal]",
+        "moving_average_50d": "[TradingView: MA(50)]",
+        "moving_average_200d": "[TradingView: MA(200)]",
+        "bollinger_bands_20d": {
+          "upper": "[TradingView: +2σ]",
+          "middle": "[TradingView: SMA20]",
+          "lower": "[TradingView: -2σ]"
+        },
+        "atr_14": "[TradingView: ATR(14)]"
+      },
+      "sources": {
+        "price": "Yahoo Finance API",
+        "technicals": "TradingView / Alpha Vantage",
+        "fetch_timestamp": "[ISO 8601 datetime UTC]"
+      },
+      "notes": "US-Tech Large Cap"
+    },
+    {
+      "id": 6,
+      "symbol": "EUNL",
+      "type": "ETF (Global)",
+      "isin": "IE00B4L5Y983",
+      "currency": "EUR",
+      "price_data": {
+        "current_price": "[API: current price]",
+        "price_date": "[API: fetch date/time]",
+        "changes": {
+          "1d_percent": "[API: 1 day %]",
+          "1w_percent": "[API: 1 week %]",
+          "1m_percent": "[API: 1 month %]",
+          "ytd_percent": "[API: YTD %]"
+        },
+        "52w_range": {
+          "low": "[API: 52w low]",
+          "high": "[API: 52w high]"
+        },
+        "aum_eur": "[iShares.com: Assets Under Management]",
+        "ter_percent": "[iShares.com: Total Expense Ratio %]"
+      },
+      "technical_indicators": {
+        "volatility_30d_annualized": "[TradingView/Alpha Vantage]",
+        "volatility_90d_annualized": "[TradingView/Alpha Vantage]",
+        "rsi_14": "[TradingView: RSI(14)]",
+        "macd_value": "[TradingView: MACD]",
+        "macd_signal": "[TradingView: Signal]",
+        "moving_average_50d": "[TradingView: MA(50)]",
+        "moving_average_200d": "[TradingView: MA(200)]",
+        "bollinger_bands_20d": {
+          "upper": "[TradingView: +2σ]",
+          "middle": "[TradingView: SMA20]",
+          "lower": "[TradingView: -2σ]"
+        },
+        "atr_14": "[TradingView: ATR(14)]"
+      },
+      "sources": {
+        "price": "Yahoo Finance API / justetf.com",
+        "technicals": "TradingView / Alpha Vantage",
+        "fund_info": "iShares.com",
+        "fetch_timestamp": "[ISO 8601 datetime]"
+      },
+      "notes": "MSCI World Diversification"
+    },
+    {
+      "id": 7,
+      "symbol": "EXS1",
+      "type": "ETF (DAX)",
+      "isin": "DE0005933931",
+      "currency": "EUR",
+      "price_data": {
+        "current_price": "[API: current price]",
+        "price_date": "[API: fetch date/time]",
+        "changes": {
+          "1d_percent": "[API: 1 day %]",
+          "1w_percent": "[API: 1 week %]",
+          "1m_percent": "[API: 1 month %]",
+          "ytd_percent": "[API: YTD %]"
+        },
+        "52w_range": {
+          "low": "[API: 52w low]",
+          "high": "[API: 52w high]"
+        },
+        "aum_eur": "[iShares.com: AUM]",
+        "ter_percent": "[iShares.com: TER %]"
+      },
+      "technical_indicators": {
+        "volatility_30d_annualized": "[TradingView/Alpha Vantage]",
+        "volatility_90d_annualized": "[TradingView/Alpha Vantage]",
+        "rsi_14": "[TradingView: RSI(14)]",
+        "macd_value": "[TradingView: MACD]",
+        "macd_signal": "[TradingView: Signal]",
+        "moving_average_50d": "[TradingView: MA(50)]",
+        "moving_average_200d": "[TradingView: MA(200)]",
+        "bollinger_bands_20d": {
+          "upper": "[TradingView: +2σ]",
+          "middle": "[TradingView: SMA20]",
+          "lower": "[TradingView: -2σ]"
+        },
+        "atr_14": "[TradingView: ATR(14)]"
+      },
+      "sources": {
+        "price": "Yahoo Finance API / justetf.com",
+        "technicals": "TradingView / Alpha Vantage",
+        "fund_info": "iShares.com",
+        "fetch_timestamp": "[ISO 8601 datetime]"
+      },
+      "notes": "DAX Core Index"
+    },
+    {
+      "id": 8,
+      "symbol": "VUAA",
+      "type": "ETF (Global)",
+      "isin": "IE00BFMXXD54",
+      "currency": "EUR",
+      "price_data": {
+        "current_price": "[API: current price]",
+        "price_date": "[API: fetch date/time]",
+        "changes": {
+          "1d_percent": "[API: 1 day %]",
+          "1w_percent": "[API: 1 week %]",
+          "1m_percent": "[API: 1 month %]",
+          "ytd_percent": "[API: YTD %]"
+        },
+        "52w_range": {
+          "low": "[API: 52w low]",
+          "high": "[API: 52w high]"
+        },
+        "aum_eur": "[Vanguard.com: AUM]",
+        "ter_percent": "[Vanguard.com: TER %]"
+      },
+      "technical_indicators": {
+        "volatility_30d_annualized": "[TradingView/Alpha Vantage]",
+        "volatility_90d_annualized": "[TradingView/Alpha Vantage]",
+        "rsi_14": "[TradingView: RSI(14)]",
+        "macd_value": "[TradingView: MACD]",
+        "macd_signal": "[TradingView: Signal]",
+        "moving_average_50d": "[TradingView: MA(50)]",
+        "moving_average_200d": "[TradingView: MA(200)]",
+        "bollinger_bands_20d": {
+          "upper": "[TradingView: +2σ]",
+          "middle": "[TradingView: SMA20]",
+          "lower": "[TradingView: -2σ]"
+        },
+        "atr_14": "[TradingView: ATR(14)]"
+      },
+      "sources": {
+        "price": "Yahoo Finance API / justetf.com",
+        "technicals": "TradingView / Alpha Vantage",
+        "fund_info": "Vanguard.com",
+        "fetch_timestamp": "[ISO 8601 datetime]"
+      },
+      "notes": "Ultra-diverse global allocation"
+    },
+    {
+      "id": 9,
+      "symbol": "BUND10",
+      "type": "Anleihe (Staatsanleihe)",
+      "name": "Deutsche Bundesanleihe 10-jährig",
+      "currency": "EUR",
+      "bond_data": {
+        "yield_percent": "[Bundesbank / Bloomberg]",
+        "yield_date": "[Abrufdatum]",
+        "price": "[Bloomberg Terminal]",
+        "duration_years": "[Berechnet oder Bloomberg]",
+        "rating": "Aaa (Moody's) / AAA (S&P)"
+      },
+      "changes": {
+        "1w_yield_change_bps": "[Basis Points]",
+        "1m_yield_change_bps": "[Basis Points]"
+      },
+      "sources": {
+        "yield": "Bundesbank / Bloomberg Markets",
+        "price": "Bloomberg Terminal",
+        "fetch_timestamp": "[ISO 8601 datetime]"
+      },
+      "notes": "Benchmark für EUR Zinsrisiko"
+    },
+    {
+      "id": 10,
+      "symbol": "ESTX50B",
+      "type": "Anleihe (Index)",
+      "name": "EUR STOXX 50 Anleihen-Rendite",
+      "currency": "EUR",
+      "bond_data": {
+        "avg_yield_percent": "[Bloomberg / ECB]",
+        "yield_date": "[Abrufdatum]",
+        "avg_duration_years": "[Index-Parameter]",
+        "rating_distribution": "[AAA/AA/A/BBB %]"
+      },
+      "changes": {
+        "1w_yield_change_bps": "[Basis Points]",
+        "1m_yield_change_bps": "[Basis Points]"
+      },
+      "sources": {
+        "yield": "Bloomberg / ECB Statistiken",
+        "fetch_timestamp": "[ISO 8601 datetime]"
+      },
+      "notes": "Europäische Corporate Bonds Rendite-Benchmark"
+    },
+    {
+      "id": 11,
+      "symbol": "XAU/EUR",
+      "type": "Edelmetall",
+      "name": "Gold (Feinunze EUR)",
+      "currency": "EUR",
+      "commodity_data": {
+        "spot_price_eur_per_oz": "[bullion.de oder Bundesbank]",
+        "price_date": "[Abrufdatum]",
+        "changes": {
+          "1d_percent": "[Berechnet]",
+          "1w_percent": "[Berechnet]",
+          "1m_percent": "[Berechnet]"
+        }
+      },
+      "sources": {
+        "price": "bullion.de / gold.de / Bundesbank",
+        "fetch_timestamp": "[ISO 8601 datetime]"
+      },
+      "notes": "Inflationsschutz, negative Korrelation zu Aktien"
+    },
+    {
+      "id": 12,
+      "symbol": "XAG/EUR",
+      "type": "Edelmetall",
+      "name": "Silber (kg EUR)",
+      "currency": "EUR",
+      "commodity_data": {
+        "spot_price_eur_per_kg": "[bullion.de oder Fachhandel]",
+        "price_date": "[Abrufdatum]",
+        "changes": {
+          "1d_percent": "[Berechnet]",
+          "1w_percent": "[Berechnet]",
+          "1m_percent": "[Berechnet]"
+        }
+      },
+      "sources": {
+        "price": "bullion.de / Fachhandel",
+        "fetch_timestamp": "[ISO 8601 datetime]"
+      },
+      "notes": "Volatiler, stark industrielle Nachfrage"
+    },
+    {
+      "id": 13,
+      "symbol": "BTC/EUR",
+      "type": "Kryptowährung",
+      "name": "Bitcoin EUR",
+      "currency": "EUR",
+      "crypto_data": {
+        "price_eur": "[CoinMarketCap oder CoinGecko]",
+        "price_date": "[Abrufdatum UTC]",
+        "changes": {
+          "1d_percent": "[API]",
+          "1w_percent": "[API]",
+          "1m_percent": "[API]"
+        },
+        "market_cap_usd": "[CoinMarketCap]",
+        "volume_24h_usd": "[CoinMarketCap]"
+      },
+      "risk_warning": "⚠️ Extreme Volatilität, KEINE Einlagensicherung. Nur reine Datensammlung, KEINE Empfehlung.",
+      "sources": {
+        "price": "CoinMarketCap API / CoinGecko API",
+        "fetch_timestamp": "[ISO 8601 datetime UTC]"
+      },
+      "notes": "Hochvolatil, spekulativ"
+    },
+    {
+      "id": 14,
+      "symbol": "ETH/EUR",
+      "type": "Kryptowährung",
+      "name": "Ethereum EUR",
+      "currency": "EUR",
+      "crypto_data": {
+        "price_eur": "[CoinMarketCap oder CoinGecko]",
+        "price_date": "[Abrufdatum UTC]",
+        "changes": {
+          "1d_percent": "[API]",
+          "1w_percent": "[API]",
+          "1m_percent": "[API]"
+        },
+        "market_cap_usd": "[CoinMarketCap]",
+        "volume_24h_usd": "[CoinMarketCap]"
+      },
+      "risk_warning": "⚠️ Extreme Volatilität, KEINE Einlagensicherung. Nur reine Datensammlung, KEINE Empfehlung.",
+      "sources": {
+        "price": "CoinMarketCap API / CoinGecko API",
+        "fetch_timestamp": "[ISO 8601 datetime UTC]"
+      },
+      "notes": "Smart-Contracts-Plattform, noch volatiler als BTC"
+    }
+  ]
+}

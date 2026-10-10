@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lebenslauf - Josef Ferdinand Linder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 210mm;
+            height: 297mm;
+            background: white;
+            margin: 0 auto;
+            padding: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
+            color: white;
+            width: 30%;
+            padding: 30px 20px;
+            overflow-y: auto;
+        }
+
+        .main {
+            width: 70%;
+            padding: 30px 30px;
+            overflow-y: auto;
+        }
+
+        .name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .title {
+            font-size: 13px;
+            color: #e0f2fe;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #60a5fa;
+            padding-bottom: 10px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #e0f2fe;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 5px;
+        }
+
+        .sidebar-content {
+            font-size: 11px;
+            line-height: 1.6;
+            color: #f0f9ff;
+        }
+
+        .sidebar-content p {
+            margin-bottom: 6px;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            margin: 2px 3px 2px 0;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .main-section {
+            margin-bottom: 18px;
+        }
+
+        .main-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #1e3a8a;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .main-title:before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #3b82f6;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .entry {
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted #e5e7eb;
+        }
+
+        .entry:last-child {
+            border-bottom: none;
+        }
+
+        .entry-title {
+            font-weight: bold;
+            color: #1e3a8a;
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .entry-subtitle {
+            font-size: 11px;
+            color: #3b82f6;
+            font-style: italic;
+            margin-bottom: 3px;
+        }
+
+        .entry-description {
+            font-size: 11px;
+            color: #4b5563;
+            line-height: 1.5;
+            margin-top: 2px;
+        }
+
+        .bullet-list {
+            font-size: 11px;
+            color: #4b5563;
+            margin-top: 3px;
+            padding-left: 15px;
+        }
+
+        .bullet-list li {
+            margin-bottom: 3px;
+        }
+
+        .highlight {
+            color: #1e3a8a;
+            font-weight: bold;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="name">Josef Ferdinand Linder</div>
+            <div class="title">Projektleiter Gefahrstoffsanierung</div>
+
+            <!-- Kontakt -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">📞 Kontakt</div>
+                <div class="sidebar-content">
+                    <p><strong>E-Mail:</strong><br>joseflinder38@gmail.com</p>
+                    <p><strong>Adresse:</strong><br>Unterdorfstraße 12a<br>65558 Heistenbach<br>Westerwald, Deutschland</p>
+                </div>
+            </div>
+
+            <!-- Persönlich -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">👤 Persönlich</div>
+                <div class="sidebar-content">
+                    <p><strong>Geburtsdatum:</strong> 15.12.1999</p>
+                    <p><strong>Alter:</strong> 26 Jahre</p>
+                    <p><strong>Geburtsort:</strong> Balduinstein</p>
+                    <p><strong>Führerschein:</strong> Klasse B</p>
+                </div>
+            </div>
+
+            <!-- Kompetenzen -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">⚙️ Kernkompetenzen</div>
+                <div class="sidebar-content">
+                    <div class="skill-tag">Gefahrstoffmanagement</div>
+                    <div class="skill-tag">TRGS 519 / 521</div>
+                    <div class="skill-tag">Asbest-Fachkunde</div>
+                    <div class="skill-tag">Abfallwirtschaft (EfbV)</div>
+                    <div class="skill-tag">Schimmelpilzsanierung</div>
+                    <div class="skill-tag">Brandschutz (Hilti)</div>
+                    <div class="skill-tag">Büroorganisation</div>
+                    <div class="skill-tag">MS Office (Word, Excel, PowerPoint)</div>
+                    <div class="skill-tag">Projektmanagement</div>
+                </div>
+            </div>
+
+            <!-- Sprachen -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">🌐 Sprachen</div>
+                <div class="sidebar-content">
+                    <p>Deutsch: Muttersprache<br>Englisch: Grundkenntnisse</p>
+                </div>
+            </div>
+
+            <!-- Zertifikate (Übersicht) -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">✅ Zertifikate</div>
+                <div class="sidebar-content">
+                    <p><strong>Aktuell:</strong></p>
+                    <p style="font-size: 10px; color: #e0f2fe;">• IHK Kaufmann (2024)<br>• Brandschutz Hilti (2024)<br>• Abfallwirtschaft (bis 2027)<br>• Schimmelpilz-Fachkunde<br>• Erste Hilfe (2023)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main">
+            <!-- PROFESSIONELLE ZUSAMMENFASSUNG -->
+            <div class="main-section">
+                <div class="main-title">Zusammenfassung</div>
+                <div class="entry-description">
+                    Erfahrener Projektleiter mit spezialisiertem Fokus auf Gefahrstoffsanierung, Asbestmanagement und Betriebssicherheit. Kombiniere kaufmännische Kompetenzen mit umfangreicher Fachkunde im Bereich Arbeitssicherheit und Compliance. Kontinuierlich tätig bei AsEG-ALLDEMONT GmbH GmbH seit 2021 mit nachweislichen Fortbildungen und Höherqualifikationen.
+                </div>
+            </div>
+
+            <!-- BERUFSERFAHRUNG -->
+            <div class="main-section">
+                <div class="main-title">Berufliche Erfahrung</div>
+
+                <div class="entry">
+                    <div class="entry-title">Projektleiter Gefahrstoffsanierung</div>
+                    <div class="entry-subtitle">AsEG-ALLDEMONT GmbH GmbH | Juni 2024 – Gegenwart</div>
+                    <ul class="bullet-list">
+                        <li>Projektleitung komplexer Gefahrstoffsanierungen</li>
+                        <li>Gefahrstoffkataster-Erstellung und -Management</li>
+                        <li>Betriebsanweisungen gemäß BetrSichV</li>
+                        <li>Unterweisungen und Schulungen für Mitarbeiter</li>
+                    </ul>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-title">Kaufmann für Büromanagement (Auszubildender) + Sanierungsfacharbeiter</div>
+                    <div class="entry-subtitle">AsEG-ALLDEMONT GmbH GmbH | Dezember 2021 – Juni 2024</div>
+                    <ul class="bullet-list">
+                        <li>Verkürzte Berufsausbildung parallel zur Berufstätigkeit</li>
+                        <li>Duale Qualifizierung: Office-Kompetenzen + Sanierungspraxis</li>
+                        <li>IHK-Prüfung: Note 3 (befriedigend) – <span class="highlight">BESTANDEN</span></li>
+                    </ul>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-title">Sanierungsfacharbeiter (ungelernte Fachkraft)</div>
+                    <div class="entry-subtitle">AsEG-ALLDEMONT GmbH GmbH | Januar 2021 – Dezember 2021</div>
+                    <ul class="bullet-list">
+                        <li>Praktische Tätigkeit in Gefahrstoffsanierung</li>
+                        <li>Schulung und Anleitung vor Ort</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SCHULBILDUNG -->
+            <div class="main-section">
+                <div class="main-title">Schulbildung & Ausbildung</div>
+
+                <div class="entry">
+                    <div class="entry-title">Kaufmann für Büromanagement (IHK) — Verkürzte Ausbildung</div>
+                    <div class="entry-subtitle">BBS Montabaur | Dezember 2021 – Juni 2024</div>
+                    <p class="entry-description">Berufsabschluss mit IHK-Prüfung bestanden. Verkürzter Ausbildungsweg aufgrund vorheriger Berufserfahrung.</p>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-title">Ausbildung: Konstruktionsmechaniker, Fachrichtung Feinblechbau</div>
+                    <div class="entry-subtitle">Wilhelm-Knapp-Schule (WKS), Weilburg | 2016 – 2020</div>
+                    <p class="entry-description">Ausbildung abgeschlossen, aber nicht als Geselle übernommen aufgrund COVID-19-Pandemie (Januar 2020). Anschließend Neuorientierung zur Gefahrstoffsanierung.</p>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-title">Mittlere Reife</div>
+                    <div class="entry-subtitle">Theodissa Realschule plus Diez | 2010 – 2016</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-title">Grundschule</div>
+                    <div class="entry-subtitle">Karl von Ibell Schule Diez | 2006 – 2010</div>
+                </div>
+            </div>
+
+            <!-- ZERTIFIKATE & FACHKUNDE -->
+            <div class="main-section">
+                <div class="main-title">Zertifikate & Fachkunde</div>
+
+                <div class="entry">
+                    <div class="entry-title">Grundlehrgang Entsorgungsfachbetriebeverordnung (EfbV) & AbfAEV</div>
+                    <div class="entry-subtitle">kenic GmbH, Berlin | Juni 2024 | <span class="highlight">Gültig bis 2026/2027</span></div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-title">Brandschutz Anwender Professional</div>
+                    <div class="entry-subtitle">Hilti Deutschland AG | November 2024 | <span class="highlight">Aktuell</span></div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-title">Schimmelpilzsanierung – Fachkunde mit Prüfung</div>
+                    <div class="entry-subtitle">Umweltinstitut Offenbach GmbH | Juli 2023</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-title">Erste-Hilfe-Ausbildung (Betrieblich)</div>
+                    <div class="entry-subtitle">miniHelp Erste Hilfe & Notfallschulungen, Worms | August 2023</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-title">TRGS 519, 521 & 2.7 (Asbest & Abbruch/Sanierung)</div>
+                    <div class="entry-subtitle">Verschiedene Kurse | 2022</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
