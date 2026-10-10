@@ -46,5 +46,5 @@ Aufbau des Freelance-Geschäfts läuft. Grundkonzept definiert. Erste Kundenakqu
 → [[03 Resources/Gefahrstoffe/Normen/TRGS-Tracker]]
 
 ### Agenten
-→ [[07 Agents/Otto_Kurator]] – Fristenverfolgung
-→ [[07 Agents/Lena_Fachrecherche]] – Normenrecherche
+→ [[07 Agents/Apollo_Kurator]] – Fristenverfolgung
+→ [[07 Agents/Athena_Fachrecherche]] – Normenrecherche

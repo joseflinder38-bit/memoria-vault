@@ -99,11 +99,11 @@ letztes-update: 2026-07-19
 ## 🤖 AGENTEN & AUTOMATISIERUNG
 
 - **[[07 Agents/README.md]]** – Agent-Team Übersicht
-  - [[07 Agents/Nina_Scout.md]] – Automatische Jobsuche (08:15 täglich)
-  - [[07 Agents/Karl_Marktbeobachter.md]] – Marktdaten (18:00 täglich)
-  - [[07 Agents/Henry_Knowledge.md]] – Datenquelle
-  - [[07 Agents/Rainer_Maintenance.md]] – Vault-Wartung (geplant)
-  - [[07 Agents/Otto_Kurator.md]] – Inbox-Manager (geplant)
+  - [[07 Agents/Hera_Scout.md]] – Automatische Jobsuche (08:15 täglich)
+  - [[07 Agents/Kratos_Marktbeobachter.md]] – Marktdaten (18:00 täglich)
+  - [[07 Agents/Zeus_Knowledge.md]] – Datenquelle
+  - [[07 Agents/Hephaestus_Maintenance.md]] – Vault-Wartung (geplant)
+  - [[07 Agents/Apollo_Kurator.md]] – Inbox-Manager (geplant)
 
 - **[[07 Agents/AUTOMATION-SETUP-PLAYBOOK.md]]** – Setup-Anleitung
 - **[[07 Agents/AUTOMATION-MONITORING.md]]** – Fehlerbehandlung

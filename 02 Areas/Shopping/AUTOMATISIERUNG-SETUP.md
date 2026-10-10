@@ -215,7 +215,7 @@ Speichere als: 02 Areas/Shopping/Kopfhörer-Preise_[HEUTE].md"
 → [[02 Areas/Shopping/README]]
 → [[02 Areas/Shopping/Kopfhörer-Preise_INDEX]]
 → [[01 Projects/Kopfhörer-Recherche/Kopfhörer-Vergleich_2026]]
-→ [[07 Agents/Max_Preisvergleich]]
+→ [[07 Agents/Hades_Preisvergleich]]
 
 ---
 

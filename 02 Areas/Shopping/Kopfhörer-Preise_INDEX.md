@@ -75,7 +75,7 @@ agent: Max
 
 → [[01 Projects/Kopfhörer-Recherche/Kopfhörer-Vergleich_2026|Hauptvergleich]]  
 → [[02 Areas/Shopping/README]]  
-→ [[07 Agents/Max_Preisvergleich]]  
+→ [[07 Agents/Hades_Preisvergleich]]  
 → [[Home]]
 
 ---

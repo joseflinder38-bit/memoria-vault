@@ -36,7 +36,7 @@ letztes-update: 2026-07-10
 
 | Regel | Status | Notizen |
 |-------|--------|---------|
-| **Datenschutz-Regel** | ✅ | Steuer-ID aus 02 Areas/Profil.md entfernt, aus 07 Agents/Henry_Knowledge.md entfernt |
+| **Datenschutz-Regel** | ✅ | Steuer-ID aus 02 Areas/Profil.md entfernt, aus 07 Agents/Zeus_Knowledge.md entfernt |
 | **Status-Regel** | ✅ Verifiziert | schtasks /query: Keine automatischen Scheduler-Tasks gefunden (alle Agenten MANUELL) |
 | **Messung-Regel** | ✅ | Zählungen mit Get-ChildItem verifiziert (116 .md Dateien gemessen) |
 
@@ -75,12 +75,12 @@ letztes-update: 2026-07-10
 
 ### Datenschutz-Härtung
 - ✅ Steuer-ID entfernt aus Profil.md
-- ✅ Steuer-ID entfernt aus Henry_Knowledge.md
+- ✅ Steuer-ID entfernt aus Zeus_Knowledge.md
 - ✅ Agent-Status korrigiert (alle: MANUELL)
 - ✅ CLAUDE.md Regeln verifiziert
 
 ### Struktur-Verbesserungen
-- ✅ Max_Preisvergleich.md erstellt
+- ✅ Hades_Preisvergleich.md erstellt
 - ✅ Firmen-Ordner README hinzugefügt
 - ✅ Kunden-Ordner README hinzugefügt
 - ✅ Platzhalter-Ordner organisiert

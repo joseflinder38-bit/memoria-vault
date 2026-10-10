@@ -72,5 +72,5 @@ Deine **Lebens-/Arbeitsbereiche**, regelmäßig aktualisiert:
 - [[02 Areas/Agent-Config/GLOBAL-RULES.md]] – Datenschutz, Automation, Messungen
 - [[02 Areas/Agent-Config/SKILLS-ÜBERSICHT.md]] – Alle Skills dokumentiert
 - [[02 Areas/Agenten-Übersicht.md]] – Wöchentliche Updates (Details)
-- [[07 Agents/Henry_Knowledge.md]] – Zentrale Datenquelle für Ausführungs-Agenten
+- [[07 Agents/Zeus_Knowledge.md]] – Zentrale Datenquelle für Ausführungs-Agenten
 - [[07 Agents/README.md]] – Agent-System-Dokumentation

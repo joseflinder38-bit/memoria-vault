@@ -45,5 +45,5 @@ Laufender Wissensbereich: alles rund um Gefahrstoffe aktuell halten – für Job
 → [[01 Projects/Freelance Gefahrstoffe Aufbau/Freelance Gefahrstoffe Aufbau]]
 
 ### Agenten
-→ [[07 Agents/Lena_Fachrecherche]] – Zitierfähige Quellen
-→ [[07 Agents/Vera_Videorecherche]] – Schulungsvideos
+→ [[07 Agents/Athena_Fachrecherche]] – Zitierfähige Quellen
+→ [[07 Agents/Calliope_Videorecherche]] – Schulungsvideos

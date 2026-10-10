@@ -161,8 +161,8 @@ Speichere als: 02 Areas/Shopping/Kopfhörer-Preise_[DATUM].md
 ## 🔗 Verknüpfungen
 
 → [[02 Areas/Shopping/Kopfhörer-Preise_INDEX]] – Tägliche Preis-Updates  
-→ [[07 Agents/Max_Preisvergleich]] – Agent-Konfiguration  
-→ [[07 Agents/Karl_Market_Watch]] – Trend-Analyse (optional)  
+→ [[07 Agents/Hades_Preisvergleich]] – Agent-Konfiguration  
+→ [[07 Agents/Kratos_Marktbeobachter]] – Trend-Analyse (optional)  
 → [[Home]] – Zurück zur Navigation  
 
 ---

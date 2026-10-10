@@ -105,7 +105,7 @@ Memoria/
 ## 📝 Änderungen seit 2026-07-03
 
 ### Neue Dateien
-- 07 Agents/Nina_Scout.md (12 KB)
+- 07 Agents/Hera_Scout.md (12 KB)
 - 02 Areas/Agent-Workflows/Tim_Manager.md (8 KB)
 
 ### Gelöschte Dateien
@@ -114,7 +114,7 @@ Memoria/
 
 ### Modifizierte Dateien
 - 02 Areas/Persönliche Daten/Stammdaten-VERIFIZIERT.md (letztes Update: 2026-07-04 20:15)
-- 07 Agents/Henry_Knowledge.md (letztes Update: 2026-07-04 14:30)
+- 07 Agents/Zeus_Knowledge.md (letztes Update: 2026-07-04 14:30)
 ```
 
 #### **3. Agent-Status (Letztes Update pro Agent)**
@@ -264,7 +264,7 @@ TEAM - Vier Agenten
 
 | Mit... | Rainer tut... |
 |--------|---------------|
-| **Henry** | Synchronisiert Stammdaten in Henry_Knowledge.md |
+| **Henry** | Synchronisiert Stammdaten in Zeus_Knowledge.md |
 | **Tim** | Archiviert abgeschlossene Tasks in Archive |
 | **Brian** | Löscht executete Test-Dateien |
 | **Dich** | Sendet tägliche Reports & Benachrichtigungen |
@@ -378,7 +378,7 @@ Dieser Log wird wöchentlich archiviert.
 ### **Rainer ist NOCH NICHT AKTIV – Implementierung in 3 Stufen**
 
 **Stufe 1 (✅ ABGESCHLOSSEN):**
-- ✅ Rainer_Maintenance.md: Ehrlich markiert als "GEPLANT"
+- ✅ Hephaestus_Maintenance.md: Ehrlich markiert als "GEPLANT"
 - ✅ Alle fiktiven Status-Angaben entfernt
 - ✅ Alle Zeitstempel auf "geplant" gesetzt
 

@@ -31,7 +31,7 @@ Ich durchsuche täglich (bei Aufruf) relevante Stellenbörsen nach neuen Anzeige
    - Einstiegsdatum
    - Gehalt (falls angegeben)
 
-3. **Abgleich** mit Profil aus [[Henry_Knowledge.md]]:
+3. **Abgleich** mit Profil aus [[Zeus_Knowledge.md]]:
    - ✅ Passt das Anforderungsprofil?
    - ✅ Sind Gefahrstoff-Kenntnisse erwünscht?
    - ⚠️ Welche Anforderungen fehlen noch?

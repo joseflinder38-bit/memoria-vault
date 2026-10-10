@@ -291,7 +291,7 @@ Aktive Jobsuche läuft. Fokus: Büromanagement + Gefahrstoffe-Expertise kombinie
 → [[02 Areas/Persönliche Daten/Stammdaten-VERIFIZIERT]]
 
 ### Agenten
-→ [[07 Agents/Nina_Scout]] – Jobsuche starten
+→ [[07 Agents/Hera_Scout]] – Jobsuche starten
 → [[07 Agents/README]] – Alle Agenten
 
 ### Ressourcen

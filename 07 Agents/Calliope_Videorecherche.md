@@ -171,7 +171,7 @@ Beispiel: `Gefahrstoffmanagement_Recherche_2026-07-04.md`
 5. **Neue Notiz erstellen & speichern:**
    - Datei im richtigen Ordner anlegen
    - Struktur: Titel, Übersicht, Links, Zusammenfassungen
-   - Mit [[Vera_Videorecherche.md]] verlinken (für Tracking)
+   - Mit [[Calliope_Videorecherche.md]] verlinken (für Tracking)
 
 ---
 

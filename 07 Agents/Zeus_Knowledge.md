@@ -15,7 +15,7 @@ quelle-verifiziert: true
 
 **⚠️ WICHTIG:** Alle **persönlichen Stammdaten** (Adresse, Ausweisdaten, Zertifikate, Ausbildung) befinden sich jetzt in [[02 Areas/Persönliche Daten/Stammdaten-VERIFIZIERT]] — der offiziellen, verifizierten Single Source of Truth.
 
-**Diese Datei (Henry_Knowledge.md)** ist eine **Quick-Reference** für Agenten, die direkt auf die detaillierte Stammdaten-Datei verweist.
+**Diese Datei (Zeus_Knowledge.md)** ist eine **Quick-Reference** für Agenten, die direkt auf die detaillierte Stammdaten-Datei verweist.
 
 **Dies ist die zentrale Datenquelle für alle Agenten** (Nina, Otto, Frieda, Lea, Tim, Brian).
 Alle Bewerbungen, Angebote, Interviews und Kommunikation nutzen diese Informationen aus [[02 Areas/Persönliche Daten/Stammdaten-VERIFIZIERT]].

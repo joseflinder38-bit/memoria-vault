@@ -203,14 +203,14 @@ status: aktiv-aktualisiert
 
 Diese Datei wird automatisch genutzt durch:
 
-✅ **[[07 Agents/Henry_Knowledge]]** — Zentrale Datenquelle für alle Agenten
+✅ **[[07 Agents/Zeus_Knowledge]]** — Zentrale Datenquelle für alle Agenten
 ✅ **Bewerbungen (Nina)** — Persönliche Daten, Qualifikationen, Arbeitserfahrung
 ✅ **Freelance-Angebote (Otto)** — Qualifikationen, Zertifikate, Referenzen
 ✅ **Lebenslauf (Tim/Brian)** — Vollständige Karrierehistorie
 ✅ **Vorstellungsgespräche (Lea)** — Vorbereitung mit deinem Profil
 ✅ **Verträge & Dokumentation** — Persönliche Angaben & Kontakt
 
-**Wichtig:** Halte diese Datei aktuell! Alle Änderungen werden automatisch in Henry_Knowledge übernommen.
+**Wichtig:** Halte diese Datei aktuell! Alle Änderungen werden automatisch in Zeus_Knowledge übernommen.
 
 ---
 
