@@ -1,36 +1,56 @@
 param()
 
+# ============================================================================
+# NINA SCOUT DAILY JOBSEARCH – Täglich 06:15 Uhr
+# ============================================================================
+# Erweiterte Version mit vollständigem Error Handling & Logging
+#
 # Hinweis (2026-10-06): Der Ordnername enthaelt einen Umlaut ("Persoenliche").
 # Windows PowerShell 5.1 liest .ps1-Dateien ohne BOM ueber die System-ANSI-Codepage,
 # wodurch woertliche Umlaute im Quelltext unter Task Scheduler verstuemmelt werden
 # koennen (z.B. "PersÃ¶nliche" statt "Persönliche" -> Pfad nicht gefunden).
 # Fix: Umlaut ueber Zeichencode aufbauen statt woertlich im Quelltext zu schreiben -
 # das ist unabhaengig von Datei-Encoding/BOM immer korrekt.
+# ============================================================================
+
+$ErrorActionPreference = 'Stop'
+
 $oe = [char]0x00F6
 
 $VaultPath = "C:\Users\josef\iCloudDrive\iCloud~md~obsidian\Memoria"
+$LogsDir = "C:\Users\josef\logs"
 $JobsFolder = "$VaultPath\02 Areas\Jobsuche"
 $PrivatFolder = "$VaultPath\02 Areas\Pers" + $oe + "nliche Daten\Privat"
-$LogFile = "$PrivatFolder\nina-scout.log"
+$LogFile = "$LogsDir\nina-scout.log"
 $DateStamp = Get-Date -Format "yyyy-MM-dd"
 $TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 $OutputFile = "$JobsFolder\Jobsuche-$DateStamp.md"
 
-if (!(Test-Path $JobsFolder)) { New-Item -ItemType Directory -Path $JobsFolder -Force | Out-Null }
-if (!(Test-Path $PrivatFolder)) { New-Item -ItemType Directory -Path $PrivatFolder -Force | Out-Null }
+# Stelle sicher, dass Verzeichnisse existieren
+@($JobsFolder, $PrivatFolder, $LogsDir) | ForEach-Object {
+    if (-not (Test-Path $_)) {
+        New-Item -ItemType Directory -Path $_ -Force | Out-Null
+    }
+}
+
+# Starte Transkript
+$TranscriptPath = "$LogsDir\nina-scout_$DateStamp.transcript"
+Start-Transcript -Path $TranscriptPath -Append -ErrorAction SilentlyContinue | Out-Null
 
 function Write-Log {
     param([string]$msg, [string]$level = "INFO")
     $entry = "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] [$level] $msg"
     Add-Content -Path $LogFile -Value $entry -Encoding UTF8
-    if ($level -eq "SUCCESS") { Write-Host "OK: $msg" -ForegroundColor Green }
-    elseif ($level -eq "ERROR") { Write-Host "ERR: $msg" -ForegroundColor Red }
-    else { Write-Host "INFO: $msg" }
+    if ($level -eq "SUCCESS") { Write-Host "✓ $msg" -ForegroundColor Green }
+    elseif ($level -eq "ERROR") { Write-Host "✗ $msg" -ForegroundColor Red }
+    elseif ($level -eq "WARN") { Write-Host "⚠ $msg" -ForegroundColor Yellow }
+    else { Write-Host "• $msg" }
 }
 
-Write-Log "NINA SCOUT - Jobsuche gestartet" "INFO"
+try {
+    Write-Log "NINA SCOUT - Jobsuche gestartet" "INFO"
 
-$Jobs = @(
+    $Jobs = @(
     @{title="Sicherheitsingenieur Arbeitssicherheit"; company="Koch Projektbau GmbH"; location="Wirges"; km=6; salary="60000-72000"; type="Vollzeit"; score=90; url="https://arbeitsagentur.de/1"; source="Arbeitsagentur.de"},
     @{title="Fachkraft Arbeitssicherheit"; company="persona service AG"; location="Westerburg"; km=18; salary="60000-70000"; type="Vollzeit"; score=82; url="https://arbeitsagentur.de/2"; source="Arbeitsagentur.de"},
     @{title="Fachkraft Arbeitssicherheit"; company="Katholisches Klinikum"; location="Montabaur"; km=19; salary="50000-65000"; type="Vollzeit"; score=80; url="https://karriere.kk-km.de/1"; source="Klinikum"},
@@ -83,33 +103,66 @@ $md += "| Im Radius <30km | $(($Jobs | Where {$_.km -lt 30}).Count) |`n`n"
 $md += "Generiert: $TimeStamp`n"
 $md += "Naechster Lauf: Morgen 06:15 Uhr`n"
 
-try {
+    Write-Log "Schreibe Jobsuche-Datei: $OutputFile" "INFO"
+
+    # Stelle sicher, dass Verzeichnis existiert
+    $OutputDir = Split-Path $OutputFile
+    if (-not (Test-Path $OutputDir)) {
+        Write-Log "Erstelle Verzeichnis: $OutputDir" "INFO"
+        New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
+    }
+
     $md | Out-File -FilePath $OutputFile -Encoding UTF8 -Force
-    Write-Log "Jobsuche-Datei erstellt: Jobsuche-$DateStamp.md" "SUCCESS"
+
+    # Verifiziere, dass Datei erstellt wurde
+    if (-not (Test-Path $OutputFile)) {
+        throw "Jobsuche-Datei konnte nicht erstellt werden: $OutputFile"
+    }
+
+    $FileSize = (Get-Item $OutputFile).Length
+    Write-Log "Jobsuche-Datei erfolgreich erstellt ($('{0:N0}' -f $FileSize) Bytes)" "SUCCESS"
+
+    # Git Backup durchführen (nicht kritisch wenn fehlgeschlagen)
+    try {
+        Write-Log "Git Backup durchführen..." "INFO"
+        Push-Location $VaultPath
+
+        if (Test-Path ".git") {
+            $GitAddCmd = git add "02 Areas/Jobsuche/Jobsuche-$DateStamp.md" 2>&1
+            if ($LASTEXITCODE -ne 0) {
+                Write-Log "Git Add-Warnung: $GitAddCmd" "WARN"
+            }
+
+            $GitCommitCmd = git commit -m "Nina Scout: Jobsuche $DateStamp - $($Jobs.Count) Stellen" 2>&1
+            if ($LASTEXITCODE -ne 0) {
+                Write-Log "Git Commit-Warnung: $GitCommitCmd" "WARN"
+            } else {
+                Write-Log "Git Backup durchgefuehrt" "SUCCESS"
+            }
+        } else {
+            Write-Log "Keine .git gefunden — Git Backup übersprungen" "WARN"
+        }
+    } catch {
+        Write-Log "Git Backup fehlgeschlagen (nicht kritisch): $($_.Exception.Message)" "WARN"
+    } finally {
+        Pop-Location
+    }
+
+    Write-Log "========================================" "INFO"
+    Write-Log "NINA SCOUT - Jobsuche erfolgreich abgeschlossen!" "SUCCESS"
+    Write-Log "Ergebnisse: $($Jobs.Count) Stellen gefunden" "INFO"
+    Write-Log "Top Matches: $($top.Count)" "INFO"
+    Write-Log "Gute Matches: $($good.Count)" "INFO"
+    Write-Log "Speicherort: $OutputFile" "INFO"
+    Write-Log "========================================" "INFO"
+
 } catch {
-    Write-Log "Fehler beim Erstellen der Datei: $_" "ERROR"
+    $ErrorMsg = $_.Exception.Message
+    Write-Log "KRITISCHER FEHLER: $ErrorMsg" "ERROR"
+    Write-Error $ErrorMsg
+    Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
     exit 1
 }
 
-try {
-    Push-Location $VaultPath
-    if (Test-Path ".git") {
-        git add "02 Areas/Jobsuche/Jobsuche-$DateStamp.md" 2>&1 | Out-Null
-        git commit -m "Nina Scout: Jobsuche $DateStamp - $($Jobs.Count) Stellen" 2>&1 | Out-Null
-        Write-Log "Git Backup durchgefuehrt" "SUCCESS"
-    }
-} catch {
-    Write-Log "Git Backup nicht moeglich" "INFO"
-} finally {
-    Pop-Location
-}
-
-Write-Log "========================================" "INFO"
-Write-Log "NINA SCOUT - Jobsuche erfolgreich abgeschlossen!" "SUCCESS"
-Write-Log "Ergebnisse: $($Jobs.Count) Stellen gefunden" "INFO"
-Write-Log "Top Matches: $($top.Count)" "INFO"
-Write-Log "Gute Matches: $($good.Count)" "INFO"
-Write-Log "Speicherort: $OutputFile" "INFO"
-Write-Log "========================================" "INFO"
-
+Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
 exit 0

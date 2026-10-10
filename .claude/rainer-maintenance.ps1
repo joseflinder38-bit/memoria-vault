@@ -1,54 +1,83 @@
 # ============================================================================
-# RAINER MAINTENANCE SCRIPT – Täglich 08:00 Uhr
+# RAINER MAINTENANCE SCRIPT – Täglich 08:00 Uhr (ERWEITERT)
 # ============================================================================
 # Funktion:
 #   1. Vault-Export erzeugen (00 Inbox/Vault-Export-DATUM.md)
 #   2. Alte Exports löschen (älter als 7 Tage)
+#   3. Umfassendes Error Logging
 #
 # Berechtigungen: Lesen Vault | Schreiben nur 00 Inbox/ | Löschen nur Export-Muster
 # ============================================================================
 
-Set-Location "C:\Users\josef\iCloudDrive\iCloud~md~obsidian\Memoria"
-
 $ErrorActionPreference = "Stop"
-$exportDate = Get-Date -Format "yyyy-MM-dd"
-$exportFile = "00 Inbox\Vault-Export-$exportDate.md"
+$VaultPath = "C:\Users\josef\iCloudDrive\iCloud~md~obsidian\Memoria"
+$LogsDir = "C:\Users\josef\logs"
+$LogFile = "$LogsDir\rainer-maintenance.log"
+$ExportDate = Get-Date -Format "yyyy-MM-dd"
+$TimeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+$ExportFile = "$VaultPath\00 Inbox\Vault-Export-$ExportDate.md"
+
+# Stelle sicher, dass Logs-Verzeichnis existiert
+if (-not (Test-Path $LogsDir)) { New-Item -ItemType Directory -Path $LogsDir -Force | Out-Null }
+
+# Starte Transkript
+$TranscriptPath = "$LogsDir\rainer-maintenance_$ExportDate.transcript"
+Start-Transcript -Path $TranscriptPath -Append -ErrorAction SilentlyContinue | Out-Null
+
+Set-Location $VaultPath
+
+function Write-Log {
+    param([string]$Message, [string]$Level = "INFO")
+    $Entry = "[$TimeStamp] [$Level] $Message"
+    Add-Content -Path $LogFile -Value $Entry -Encoding UTF8
+    if ($Level -eq "SUCCESS") { Write-Host "✓ $Message" -ForegroundColor Green }
+    elseif ($Level -eq "ERROR") { Write-Host "✗ $Message" -ForegroundColor Red }
+    else { Write-Host "• $Message" }
+}
 
 # ============================================================================
 # 1. VAULT-EXPORT ERZEUGEN
 # ============================================================================
 
-Write-Host "[$exportDate 08:00] RAINER: Vault-Export wird gestartet..." -ForegroundColor Cyan
+try {
+    Write-Log "RAINER: Vault-Export wird gestartet..." "INFO"
 
-# Vault-Statistiken mit echten Befehlen
-$vaultStats = Get-ChildItem -Recurse -File | Measure-Object -Property Length -Sum
-$vaultSizeBytes = $vaultStats.Sum
-$vaultSizeMB = [math]::Round($vaultSizeBytes / 1MB, 2)
-$vaultFileCount = $vaultStats.Count
+    # Vault-Statistiken mit echten Befehlen
+    Write-Log "Berechne Vault-Statistiken..." "INFO"
+    $VaultStats = Get-ChildItem -Recurse -File -ErrorAction Stop | Measure-Object -Property Length -Sum
+    $VaultSizeBytes = $VaultStats.Sum
+    $VaultSizeMB = [math]::Round($VaultSizeBytes / 1MB, 2)
+    $VaultFileCount = $VaultStats.Count
 
-# Folder-Breakdown (Ausschlüsse: Persönliche Daten, Persönliche Dokumente)
-$folders = @(
-    "00 Inbox",
-    "01 Projects",
-    "02 Areas",
-    "03 Resources",
-    "04 Archive",
-    "05 Templates",
-    "06 Daily Notes",
-    "07 Agents"
-)
+    Write-Log "Vault-Größe: $VaultSizeMB MB, Dateien: $VaultFileCount" "INFO"
 
-$folderStats = @()
-foreach ($folder in $folders) {
-    if (Test-Path $folder) {
-        $stats = Get-ChildItem $folder -Recurse -File | Measure-Object -Property Length -Sum
-        $folderStats += @{
-            Folder = $folder
-            Size = [math]::Round($stats.Sum / 1MB, 2)
-            Files = $stats.Count
+    # Folder-Breakdown (Ausschlüsse: Persönliche Daten, Persönliche Dokumente)
+    $Folders = @(
+        "00 Inbox",
+        "01 Projects",
+        "02 Areas",
+        "03 Resources",
+        "04 Archive",
+        "05 Templates",
+        "06 Daily Notes",
+        "07 Agents"
+    )
+
+    $FolderStats = @()
+    foreach ($Folder in $Folders) {
+        if (Test-Path $Folder) {
+            try {
+                $Stats = Get-ChildItem $Folder -Recurse -File -ErrorAction Stop | Measure-Object -Property Length -Sum
+                $FolderStats += @{
+                    Folder = $Folder
+                    Size = if ($Stats.Sum) { [math]::Round($Stats.Sum / 1MB, 2) } else { 0 }
+                    Files = $Stats.Count
+                }
+            } catch {
+                Write-Log "Warnung: Fehler beim Lesen von Ordner $Folder" "WARN"
+            }
         }
     }
-}
 
 # Ausschlusslisten-Ordner (nur Namen, KEINE Dateilisten)
 $exclusions = @(
@@ -113,25 +142,50 @@ $($exclusions | ForEach-Object { "- ✅ $_ (Grund: Sensible Daten, keine Listung
 
 "@
 
-# Export-Datei schreiben (NUR in 00 Inbox/)
-$exportContent | Out-File -FilePath $exportFile -Encoding UTF8 -Force
+    # Export-Datei schreiben (NUR in 00 Inbox/)
+    Write-Log "Schreibe Export-Datei: $ExportFile" "INFO"
+    $ExportContent | Out-File -FilePath $ExportFile -Encoding UTF8 -Force
 
-Write-Host "[$exportDate 08:00] RAINER: Export erstellt → $exportFile" -ForegroundColor Green
+    # Verifiziere, dass Datei erstellt wurde
+    if (-not (Test-Path $ExportFile)) {
+        throw "Export-Datei konnte nicht erstellt werden: $ExportFile"
+    }
+
+    $FileSize = (Get-Item $ExportFile).Length
+    Write-Log "Export-Datei erfolgreich erstellt ($('{0:N0}' -f $FileSize) Bytes)" "SUCCESS"
+
+} catch {
+    Write-Log "Fehler beim Export: $($_.Exception.Message)" "ERROR"
+    throw $_
+}
 
 # ============================================================================
 # 2. ALTE EXPORTS LÖSCHEN (älter als 7 Tage)
 # ============================================================================
 
-Write-Host "[$exportDate 08:00] RAINER: Cleanup alte Exports..." -ForegroundColor Cyan
+try {
+    Write-Log "Cleanup alte Exports (älter als 7 Tage)..." "INFO"
 
-$cutoffDate = (Get-Date).AddDays(-7)
-$oldExports = Get-ChildItem "00 Inbox\Vault-Export-*.md" -File | Where-Object { $_.LastWriteTime -lt $cutoffDate }
+    $CutoffDate = (Get-Date).AddDays(-7)
+    $OldExports = Get-ChildItem "$VaultPath\00 Inbox\Vault-Export-*.md" -File -ErrorAction Stop |
+                  Where-Object { $_.LastWriteTime -lt $CutoffDate }
 
-if ($oldExports) {
-    $oldExports | Remove-Item -Force
-    Write-Host "[$exportDate 08:00] RAINER: $(($oldExports | Measure-Object).Count) alte Export(s) gelöscht" -ForegroundColor Green
-} else {
-    Write-Host "[$exportDate 08:00] RAINER: Keine alten Exports zum Löschen" -ForegroundColor Gray
+    if ($OldExports) {
+        $OldCount = ($OldExports | Measure-Object).Count
+        Write-Log "Lösche $OldCount alte Export(s)..." "INFO"
+        $OldExports | Remove-Item -Force -ErrorAction Stop
+        Write-Log "$OldCount alte Export(s) gelöscht" "SUCCESS"
+    } else {
+        Write-Log "Keine alten Exports zum Löschen" "INFO"
+    }
+} catch {
+    Write-Log "Fehler beim Cleanup: $($_.Exception.Message)" "ERROR"
+    # Cleanup-Fehler sind nicht kritisch — fahre fort
 }
 
-Write-Host "[$exportDate 08:00] RAINER: Maintenance abgeschlossen [OK]" -ForegroundColor Green
+Write-Log "========================================" "INFO"
+Write-Log "RAINER: Maintenance erfolgreich abgeschlossen" "SUCCESS"
+Write-Log "========================================" "INFO"
+
+Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
+exit 0
