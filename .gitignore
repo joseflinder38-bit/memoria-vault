@@ -58,3 +58,8 @@ tmp/
 # AUSWEISDOKUMENTE - NIEMALS VERSIONIEREN (Repo ist öffentlich!)
 Ausweise/
 Sensible Dokumente*/
+
+# SPIELE-DATEIEN (gehoeren nicht in den Vault, Altlast)
+FRONTEND/
+GLOBAL/
+server.dll
