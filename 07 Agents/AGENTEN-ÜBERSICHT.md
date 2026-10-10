@@ -1,7 +1,9 @@
 ---
-type: agents-directory
-letztes-update: 2026-07-25
+type: agent-overview
+letztes-update: 2026-10-11
 ---
+
+# 🏛️ Agenten-Übersicht
 
 <ul style="list-style: none; padding-left: 0; font-size: 18px; line-height: 2.4;">
 

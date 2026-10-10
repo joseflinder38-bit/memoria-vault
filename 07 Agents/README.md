@@ -1,6 +1,7 @@
 ---
-type: agents-directory
-letztes-update: 2026-07-25
+type: agents-hub
+version: "4.0"
+last-update: 2026-10-11
 ---
 
 <ul style="list-style: none; padding-left: 0; font-size: 18px; line-height: 2.4;">
